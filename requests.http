@@ -1,0 +1,16 @@
+
+### Login
+GET http://localhost:5000/User?email=test&password=test
+
+
+### Register
+POST http://localhost:5000/User
+Content-Type: application/json
+
+{
+    "FirstName":"test",
+    "LastName":"test",
+    "Login":"test",
+    "Email":"test",
+    "Password":"test"
+}
