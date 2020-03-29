@@ -1,0 +1,9 @@
+DB
+	188.130.138.47
+	rstore
+	cJt2RUzMTq
+
+http://phpmyadmin.kikoriki.space/
+
+	rstore
+	password	
