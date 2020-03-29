@@ -15,6 +15,7 @@ namespace RubiconeStoreBack.Error
             UserNotFound,
             WrongPassword,
             SameUserFound,
+            WrongAuthKey
         }
 
         public static T FieldEmptyError<T>(this T responce) where T : IErrorResponce
@@ -45,6 +46,14 @@ namespace RubiconeStoreBack.Error
         {
             responce.ErrorCode = (int)AErrors.SameUserFound;
             responce.ErrorDescription = "Такой пользователь уже зарегистрирован";
+
+            return responce;
+        }
+
+        public static T WrongAuthKey<T>(this T responce) where T : IErrorResponce
+        {
+            responce.ErrorCode = (int)AErrors.WrongAuthKey;
+            responce.ErrorDescription = "Ключ авторизации неверен";
 
             return responce;
         }

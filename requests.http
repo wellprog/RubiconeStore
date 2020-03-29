@@ -1,16 +1,29 @@
 
 ### Login
-GET http://localhost:5000/User?email=test&password=test
+GET http://kikoriki.space:5000/User?email=test&password=test
 
 
 ### Register
-POST http://localhost:5000/User
+POST http://kikoriki.space:5000/User
 Content-Type: application/json
 
 {
     "FirstName":"test",
     "LastName":"test",
     "Login":"test",
-    "Email":"test",
+    "Email":"123",
+    "Password":"test"
+}
+
+
+### Register
+PATCH http://kikoriki.space:5000/User
+Content-Type: application/json
+
+{
+    "FirstName":"test",
+    "LastName":"test",
+    "Login":"test",
+    "Email":"123",
     "Password":"test"
 }

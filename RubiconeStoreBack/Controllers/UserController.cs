@@ -91,5 +91,34 @@ namespace RubiconeStoreBack.Controllers
                 }
             };
         }
+
+        [HttpPatch]
+        public ResponceModel<UserAuthModel> Update(RequestModel<User> userModel)
+        {
+            if (string.IsNullOrWhiteSpace(userModel.AuthKey))
+                return new ResponceModel<UserAuthModel>().WrongAuthKey();
+
+            var userSession = _store.UserSessions.Where(f => f.SessionToken == userModel.AuthKey && f.IsActive == true).Include(f => f.User).FirstOrDefault();
+
+            if (userSession == null || userSession.User.ID != userModel.Content.ID)
+                return new ResponceModel<UserAuthModel>().WrongAuthKey();
+
+            userSession.User.Email = userModel.Content.Email;
+            userSession.User.FirstName = userModel.Content.FirstName;
+            userSession.User.LastName = userModel.Content.LastName;
+            userSession.User.Login = userModel.Content.Login;
+            userSession.User.Phone = userModel.Content.Phone;
+
+            _store.SaveChanges();
+
+            return new ResponceModel<UserAuthModel>()
+            {
+                content = new UserAuthModel
+                {
+                    User = userSession.User,
+                    UserSession = userSession
+                }
+            };
+        }
     }
 }
