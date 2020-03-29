@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29924.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubiconeStore.Android", "RubiconeStore\RubiconeStore.Android\RubiconeStore.Android.csproj", "{FB74D9C1-0E64-4241-93ED-1C5C29C664AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubiconeStore", "RubiconeStore\RubiconeStore\RubiconeStore.csproj", "{0F8CE13B-5EF2-46A1-AC58-98CE5772F886}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB74D9C1-0E64-4241-93ED-1C5C29C664AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB74D9C1-0E64-4241-93ED-1C5C29C664AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB74D9C1-0E64-4241-93ED-1C5C29C664AB}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FB74D9C1-0E64-4241-93ED-1C5C29C664AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB74D9C1-0E64-4241-93ED-1C5C29C664AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB74D9C1-0E64-4241-93ED-1C5C29C664AB}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{0F8CE13B-5EF2-46A1-AC58-98CE5772F886}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F8CE13B-5EF2-46A1-AC58-98CE5772F886}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F8CE13B-5EF2-46A1-AC58-98CE5772F886}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0F8CE13B-5EF2-46A1-AC58-98CE5772F886}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F8CE13B-5EF2-46A1-AC58-98CE5772F886}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F8CE13B-5EF2-46A1-AC58-98CE5772F886}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F2EDBB4F-A419-4B42-85B2-CF46D56B76BD}
+	EndGlobalSection
+EndGlobal
