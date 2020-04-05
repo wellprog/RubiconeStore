@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using RubiconeStoreBack.DataAccess;
+using RubiconeStoreBack.Helpers;
 
 namespace RubiconeStoreBack
 {
@@ -28,6 +29,7 @@ namespace RubiconeStoreBack
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped(provider => new DbStore(Configuration.GetValue<String>("ConnectionString")));
+            services.AddScoped<UserHelper>();
             services.AddControllers();
         }
 

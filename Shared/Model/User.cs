@@ -21,6 +21,7 @@ namespace Shared.Model
         // Relations
         [JsonIgnore]
         public List<UserSession> UserSessions { get; set; }
+        public List<Check> Checks { get; set; }
 
         public bool IsModelRight()
         {

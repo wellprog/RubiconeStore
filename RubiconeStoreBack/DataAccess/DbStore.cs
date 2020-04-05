@@ -14,6 +14,14 @@ namespace RubiconeStoreBack.DataAccess
         private readonly string _connectionString;
         public DbSet<User> Users { get; set; }
         public DbSet<UserSession> UserSessions { get; set; }
+        public DbSet<Check> Checks { get; set; }
+        public DbSet<CheckSell> CheckSells { get; set; }
+        public DbSet<Sell> Sells { get; set; }
+        public DbSet<Storage> Storages { get; set; }
+        public DbSet<Good> Goods { get; set; }
+        public DbSet<GoodCategory> GoodCategories { get; set; }
+        public DbSet<GoodProperty> GoodProperties { get; set; }
+        public DbSet<GoodPropertyValue> GoodPropertyValues { get; set; }
 
         public DbStore(string connectionString)
         {

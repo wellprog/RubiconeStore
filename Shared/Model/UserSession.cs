@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Shared.Model
 {
-    public class UserSession
+    public class UserSession : IValidate
     {
         public int ID { get; set; }
         public int UserID { get; set; }
@@ -18,5 +18,10 @@ namespace Shared.Model
         // Relations
         [JsonIgnore]
         public User User { get; set; }
+
+        public bool IsModelRight()
+        {
+            return UserID > 0;
+        }
     }
 }
