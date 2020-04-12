@@ -15,6 +15,6 @@ namespace Shared.Model
         // Relations
 
         public User User { get; set; }
-        public List<CheckSell> CheckSells { get; set; }
+        public List<Sell> Sells { get; set; }
     }
 }

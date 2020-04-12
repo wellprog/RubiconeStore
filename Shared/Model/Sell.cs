@@ -9,11 +9,12 @@ namespace Shared.Model
         public int ID { get; set; }
         public int Count { get; set; }
         public int StorageID { get; set; }
+        public int CheckID { get; set; }
 
         /************************************************/
         // Relations
 
         public Storage Storage { get; set; }
-        public List<CheckSell> CheckSells { get; set; }
+        public Check Check { get; set; }
     }
 }

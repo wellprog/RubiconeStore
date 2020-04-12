@@ -5,6 +5,7 @@
        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
        mc:Ignorable="d"
        xmlns:local="clr-namespace:RubiconeStore.Views"
+       xmlns:myLocal="clr-namespace:RubiconeStore.MyViews"
        Title="RubiconeStore"
        x:Class="RubiconeStore.AppShell">
 
@@ -35,7 +36,7 @@
             <ShellContent ContentTemplate="{DataTemplate local:ItemsPage}" />
         </Tab>
         <Tab Title="About" Icon="tab_about.png">
-            <ShellContent ContentTemplate="{DataTemplate local:AboutPage}" />
+            <ShellContent ContentTemplate="{DataTemplate myLocal:AdminPage}" />
         </Tab>
     </TabBar>
 

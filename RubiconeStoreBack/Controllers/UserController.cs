@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 
 using RubiconeStoreBack.DataAccess;
 using RubiconeStoreBack.Error;
-using RubiconeStoreBack.Model;
 
 using Shared.Model;
 

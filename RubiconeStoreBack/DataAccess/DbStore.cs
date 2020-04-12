@@ -15,7 +15,6 @@ namespace RubiconeStoreBack.DataAccess
         public DbSet<User> Users { get; set; }
         public DbSet<UserSession> UserSessions { get; set; }
         public DbSet<Check> Checks { get; set; }
-        public DbSet<CheckSell> CheckSells { get; set; }
         public DbSet<Sell> Sells { get; set; }
         public DbSet<Storage> Storages { get; set; }
         public DbSet<Good> Goods { get; set; }

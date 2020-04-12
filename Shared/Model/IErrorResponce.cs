@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RubiconeStoreBack.Model
+namespace Shared.Model
 {
     public interface IErrorResponce
     {
-        public int ErrorCode { get; set; }
-        public string ErrorDescription { get; set; }
+        int ErrorCode { get; set; }
+        string ErrorDescription { get; set; }
     }
 }

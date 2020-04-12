@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RubiconeStoreBack.Model
+namespace Shared.Model
 {
     public class RequestModel <T>
     {

@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using RubiconeStoreBack.DataAccess;
 using RubiconeStoreBack.Error;
 using RubiconeStoreBack.Helpers;
-using RubiconeStoreBack.Model;
 
 using Shared.Model;
 

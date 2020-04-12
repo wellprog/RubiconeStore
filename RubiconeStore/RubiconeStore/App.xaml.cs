@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using RubiconeStore.Services;
 using RubiconeStore.Views;
+using RubiconeStore.MyViews;
 
 namespace RubiconeStore
 {
@@ -14,7 +15,8 @@ namespace RubiconeStore
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
-            MainPage = new AppShell();
+            //MainPage = new AppShell();
+            MainPage = new LoginPage();
         }
 
         protected override void OnStart()

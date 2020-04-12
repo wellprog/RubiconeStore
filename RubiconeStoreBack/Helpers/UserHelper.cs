@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 using RubiconeStoreBack.DataAccess;
 using RubiconeStoreBack.Error;
-using RubiconeStoreBack.Model;
+using Shared.Model;
 
 namespace RubiconeStoreBack.Helpers
 {

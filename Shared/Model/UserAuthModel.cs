@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using Shared.Model;
 
-namespace RubiconeStoreBack.Model
+namespace Shared.Model
 {
     public class UserAuthModel
     {
