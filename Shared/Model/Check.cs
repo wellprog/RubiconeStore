@@ -16,5 +16,21 @@ namespace Shared.Model
 
         public User User { get; set; }
         public List<Sell> Sells { get; set; }
+
+        public int getPrice()
+        {
+            int sellPricesSum = 0;
+
+            for (int i = 0; i < Sells.Count; i++)
+            {
+                sellPricesSum += Sells[i].getPrice();
+            }
+
+            return sellPricesSum;
+        }
+        public bool IsModelRight()
+        {
+            return UserID != 0 && CreatedDate != DateTime.MinValue;
+        }
     }
 }

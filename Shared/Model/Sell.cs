@@ -14,7 +14,17 @@ namespace Shared.Model
         /************************************************/
         // Relations
 
+        public Good SelledGood { get; set; }
         public Storage Storage { get; set; }
         public Check Check { get; set; }
+
+        public int getPrice()
+        {
+            return Count * SelledGood.Price;
+        }
+        public bool IsModelRight()
+        {
+            return Count != 0;
+        }
     }
 }
