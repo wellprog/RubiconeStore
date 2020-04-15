@@ -17,6 +17,7 @@ namespace RubiconeStoreBack.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    //Класс для контролирования корзины пользователя
     public class CartController : ControllerBase
     {
         private readonly ILogger<CartController> _logger;
@@ -29,8 +30,9 @@ namespace RubiconeStoreBack.Controllers
             this._store = store;
             this._userHelper = userHelper;
         }
-
+        
         [HttpGet]
+        //Метод возвращает тот чек пользователя, который является корзиной
         public ResponceModel<Check> getCart(ResponceModel<User> userRequest)
         {
             var user = userRequest.content;
@@ -48,7 +50,8 @@ namespace RubiconeStoreBack.Controllers
             return new ResponceModel<Check>().RecordNotFound();
         }
 
-        public ResponceModel<int> getCartPrice(ResponceModel<User> userRequest)
+        //Метод возращает сумму цен товаров в корзине
+        public ResponceModel<int> getPrice(ResponceModel<User> userRequest)
         {
             var userCart = getCart(userRequest).content;
             if (userCart == null)
@@ -57,7 +60,8 @@ namespace RubiconeStoreBack.Controllers
             return new ResponceModel<int> { content = userCart.getPrice() };
         }
         
-        public ResponceModel<Sell> GetCartItem(ResponceModel<User> userRequest, int index)
+        //Получает предмет в корзине, который лежит в ней по указанному индексу
+        public ResponceModel<Sell> getItem(ResponceModel<User> userRequest, int index)
         {
             var userCart = getCart(userRequest).content;
             if (userCart == null)
@@ -65,8 +69,10 @@ namespace RubiconeStoreBack.Controllers
 
             return new ResponceModel<Sell> { content = userCart.Sells[index] };
         }
-        
-        public ResponceModel<Sell> addCartItem(ResponceModel<User> userRequest, ResponceModel<Sell> sellRequest)
+
+        [HttpPost]
+        //Добавляет предмет в корзину
+        public ResponceModel<Sell> addItem(ResponceModel<User> userRequest, ResponceModel<Sell> sellRequest)
         {
             var user = userRequest.content;
             var userCart = getCart(userRequest).content;
@@ -74,17 +80,22 @@ namespace RubiconeStoreBack.Controllers
             if (userCart == null || !addedSell.IsModelRight())
                 return new ResponceModel<Sell>().RecordNotFound();
 
-            _store.Remove<User>(user);
-
+            addedSell.CheckID = userCart.ID;
             userCart.Sells.Add(addedSell);
 
-            _store.Add(user);
+            _store.Update<User>(user); //!
+            //or
+            //_store.Remove<User>(user);
+            //*Edit user*
+            //_store.Add<User>(user);
             _store.SaveChanges();
 
             return new ResponceModel<Sell> { content = addedSell };
         }
 
-        public ResponceModel<Sell> deleteCartItem(ResponceModel<User> userRequest, ResponceModel<Sell> sellRequest)
+        [HttpDelete]
+        //Удаляет предмет из корзины
+        public ResponceModel<Sell> deleteItem(ResponceModel<User> userRequest, ResponceModel<Sell> sellRequest)
         {
             var user = userRequest.content;
             var userCart = getCart(userRequest).content;
@@ -92,18 +103,28 @@ namespace RubiconeStoreBack.Controllers
             if (userCart == null || !addedSell.IsModelRight())
                 return new ResponceModel<Sell>().RecordNotFound();
 
-            _store.Remove<User>(user);
-
+            addedSell.CheckID = 0; //!
             userCart.Sells.Remove(addedSell);
 
-            _store.Remove(user);
+            _store.Update<User>(user);
             _store.SaveChanges();
 
             return new ResponceModel<Sell> { content = addedSell };
         }
-        
+
+        //Возвращает количество товаров в корзине
+        public ResponceModel<int> getCount(ResponceModel<User> userRequest)
+        {
+            var userCart = getCart(userRequest).content;
+            if (userCart == null)
+                return new ResponceModel<int>().RecordNotFound();
+
+            return new ResponceModel<int> { content = userCart.Sells.Count };
+        }
+
         //pay()
 
+        //Внутренний метод. возвращает является ли чек корзиной
         private bool isCart(Check check)
         {
             return !check.IsDone;
