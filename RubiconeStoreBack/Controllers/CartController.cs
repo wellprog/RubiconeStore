@@ -36,9 +36,8 @@ namespace RubiconeStoreBack.Controllers
         public ResponceModel<Check> getCart(ResponceModel<User> userRequest)
         {
             var user = userRequest.content;
-
             if (!user.IsModelRight())
-                return new ResponceModel<Check>().FieldEmptyError();
+                return new ResponceModel<Check>().UserNotFound();
 
             for (int i = 0; i < user.Checks.Count; i++)
             {
@@ -53,21 +52,25 @@ namespace RubiconeStoreBack.Controllers
         //Метод возращает сумму цен товаров в корзине
         public ResponceModel<int> getPrice(ResponceModel<User> userRequest)
         {
+            var user = userRequest.content;
+            if (!user.IsModelRight())
+                return new ResponceModel<int>().UserNotFound();
             var userCart = getCart(userRequest).content;
-            if (userCart == null)
-                return new ResponceModel<int>().RecordNotFound();
+            int userCartPrice = userCart.getPrice();
 
-            return new ResponceModel<int> { content = userCart.getPrice() };
+            return new ResponceModel<int> { content = userCartPrice };
         }
         
         //Получает предмет в корзине, который лежит в ней по указанному индексу
         public ResponceModel<Sell> getItem(ResponceModel<User> userRequest, int index)
         {
+            var user = userRequest.content;
+            if (!user.IsModelRight())
+                return new ResponceModel<Sell>().UserNotFound();
             var userCart = getCart(userRequest).content;
-            if (userCart == null)
-                return new ResponceModel<Sell>().RecordNotFound();
+            Sell gettedItem = userCart.Sells[index];
 
-            return new ResponceModel<Sell> { content = userCart.Sells[index] };
+            return new ResponceModel<Sell> { content = gettedItem };
         }
 
         [HttpPost]
@@ -75,9 +78,12 @@ namespace RubiconeStoreBack.Controllers
         public ResponceModel<Sell> addItem(ResponceModel<User> userRequest, ResponceModel<Sell> sellRequest)
         {
             var user = userRequest.content;
+            if (!user.IsModelRight())
+                return new ResponceModel<Sell>().UserNotFound();
             var userCart = getCart(userRequest).content;
+
             var addedSell = sellRequest.content;
-            if (userCart == null || !addedSell.IsModelRight())
+            if (!addedSell.IsModelRight())
                 return new ResponceModel<Sell>().RecordNotFound();
 
             addedSell.CheckID = userCart.ID;
@@ -98,28 +104,33 @@ namespace RubiconeStoreBack.Controllers
         public ResponceModel<Sell> deleteItem(ResponceModel<User> userRequest, ResponceModel<Sell> sellRequest)
         {
             var user = userRequest.content;
+            if (!user.IsModelRight())
+                return new ResponceModel<Sell>().UserNotFound();
             var userCart = getCart(userRequest).content;
-            var addedSell = sellRequest.content;
-            if (userCart == null || !addedSell.IsModelRight())
+
+            var deletedSell = sellRequest.content;
+            if (!deletedSell.IsModelRight())
                 return new ResponceModel<Sell>().RecordNotFound();
 
-            addedSell.CheckID = 0; //!
-            userCart.Sells.Remove(addedSell);
+            deletedSell.CheckID = 0; //!
+            userCart.Sells.Remove(deletedSell);
 
             _store.Update<User>(user);
             _store.SaveChanges();
 
-            return new ResponceModel<Sell> { content = addedSell };
+            return new ResponceModel<Sell> { content = deletedSell };
         }
 
         //Возвращает количество товаров в корзине
         public ResponceModel<int> getCount(ResponceModel<User> userRequest)
         {
+            var user = userRequest.content;
+            if (!user.IsModelRight())
+                return new ResponceModel<int>().UserNotFound();
             var userCart = getCart(userRequest).content;
-            if (userCart == null)
-                return new ResponceModel<int>().RecordNotFound();
+            int userCartItemsCount = userCart.Sells.Count;
 
-            return new ResponceModel<int> { content = userCart.Sells.Count };
+            return new ResponceModel<int> { content = userCartItemsCount };
         }
 
         //pay()
