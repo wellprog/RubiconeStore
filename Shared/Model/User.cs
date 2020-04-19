@@ -21,7 +21,8 @@ namespace Shared.Model
         // Relations
         [JsonIgnore]
         public List<UserSession> UserSessions { get; set; }
-        public List<Check> Checks { get; set; }
+        public List<Check> Checks { get; set; } //Его чеки (Истории купленных товаров)
+        public Cart Cart { get; set; } //Корзина пользователя
 
         public bool IsModelRight()
         {

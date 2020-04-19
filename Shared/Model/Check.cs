@@ -8,7 +8,8 @@ namespace Shared.Model
     {
         public int ID { get; set; }
         public int UserID { get; set; }
-        public bool IsDone { get; set; }
+        //Есть класс Cart для корзины, значит все чеки - оплачены и существуют как история.
+        //public bool IsDone { get; set; }
         public DateTime CreatedDate { get; set; }
 
         /************************************************/
