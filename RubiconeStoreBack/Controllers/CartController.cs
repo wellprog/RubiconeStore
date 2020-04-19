@@ -101,16 +101,16 @@ namespace RubiconeStoreBack.Controllers
             if (!user.IsModelRight())
                 return new ResponceModel<Sell>().UserNotFound();
 
-            var addedSell = sellRequest.content;
-            if (!addedSell.IsModelRight())
+            var deletedSell = sellRequest.content;
+            if (!deletedSell.IsModelRight())
                 return new ResponceModel<Sell>().RecordNotFound();
 
             var userCart = userRequest.content.Cart;
             if (userCart == null)
                 return new ResponceModel<Sell>().RecordNotFound();
 
-            //addedSell.CheckID = 0; //Товар не куплен, но выложен - нигде не метили его принадлежность к корзине, нигде и не будем метить, что он ей теперь не принадлежит
-            userCart.Sells.Remove(addedSell);
+            //deletedSell.CheckID = 0; //Товар не куплен, но выложен - нигде не метили его принадлежность к корзине, нигде и не будем метить, что он ей теперь не принадлежит
+            userCart.Sells.Remove(deletedSell);
 
             _store.Update<User>(user);
             _store.SaveChanges();
