@@ -1,6 +1,9 @@
 ﻿using RubiconeStore.MyModels;
+using RubiconeStore.MyViews;
+
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -19,27 +22,28 @@ namespace RubiconeStore.MyViewModels
             Good
         }
 
-        private List<IExecutableModel> elements = new List<IExecutableModel>();
-        public IEnumerable<IExecutableModel> Elements => elements;
+        public ObservableCollection<IExecutableModel> Elements { get; private set; }
         public string PageName => "Главная Админ";
 
-        private readonly INavigation navigation;
+        public Page Page { get; set; }
 
-        public AdminViewModel(INavigation navigation)
+        public AdminViewModel()
         {
-            this.navigation = navigation;
+            Elements = new ObservableCollection<IExecutableModel>();
 
-            elements.Add(new ActionModel<Actions>(Actions.User) { Text = "Пользователи", ExecAction = ExecAction });
-            elements.Add(new ActionModel<Actions>(Actions.Good) { Text = "Товары", ExecAction = ExecAction });
+            Elements.Add(new ActionModel<Actions>(Actions.User) { Text = "Пользователи", ExecAction = ExecAction });
+            Elements.Add(new ActionModel<Actions>(Actions.Good) { Text = "Товары", ExecAction = ExecAction });
         }
 
-        private void ExecAction(Actions a)
+        private async Task ExecAction(Actions a)
         {
             switch (a)
             {
-                case Actions.User: /*navigation.PushAsync();*/ break;
+                case Actions.User: await Page?.Navigation.PushAsync(new SimpleTablePage() { ViewModel = new UserListViewModel() }); break;
                 case Actions.Good: /*navigation.PushAsync();*/ break;
             }
+
+            return;
         }
 
         public async Task Appearing()

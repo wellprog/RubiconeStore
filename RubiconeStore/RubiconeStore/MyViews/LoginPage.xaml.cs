@@ -1,4 +1,5 @@
-﻿using RubiconeStore.MyViewModels;
+﻿using RubiconeStore.DataStores;
+using RubiconeStore.MyViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,16 +15,22 @@ namespace RubiconeStore.MyViews
     public partial class LoginPage : ContentPage
     {
         private readonly LoginViewModel model;
+        private readonly SessionDataStore _sessionDataStore;
+
         public LoginPage()
         {
             InitializeComponent();
             model = new LoginViewModel(this);
             BindingContext = model;
+            _sessionDataStore = new SessionDataStore();
         }
 
-        private async void LoginClicked(object sender, EventArgs e)
+        protected override async void OnAppearing()
         {
-            await model.LoginMe();
+            if (_sessionDataStore.UserAuthModel != null)
+            {
+                model.ShowNext();
+            }
         }
     }
 }

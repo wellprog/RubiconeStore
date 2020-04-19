@@ -1,15 +1,16 @@
 ﻿using RubiconeStore.MyModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+
+using Xamarin.Forms;
 
 namespace RubiconeStore.MyViewModels
 {
     public interface ITableViewModel
     {
         string PageName { get; }
-        IEnumerable<IExecutableModel> Elements { get; }
+        Page Page { get; set; }
+        ObservableCollection<IExecutableModel> Elements { get; }
         Task Appearing();
     }
 }

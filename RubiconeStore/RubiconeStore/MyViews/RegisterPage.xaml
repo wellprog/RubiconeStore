@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="RubiconeStore.MyViews.LoginPage">
+             x:Class="RubiconeStore.MyViews.RegisterPage">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Введите логин"
@@ -12,14 +12,27 @@
                 HorizontalOptions="CenterAndExpand"
                 Margin="0,120,0,0"/>
             <Entry Text="{Binding Login}" Margin="40,0,40,0" HorizontalTextAlignment="Center" />
+
+            <Label Text="Введите Email"
+                VerticalOptions="Start" 
+                HorizontalOptions="CenterAndExpand"
+                Margin="0,20,0,0"/>
+            <Entry Text="{Binding Email}" Margin="40,0,40,0" HorizontalTextAlignment="Center" />
+
             <Label Text="Введите пароль"
                 VerticalOptions="Start" 
                 HorizontalOptions="CenterAndExpand"
                 Margin="0,20,0,0"/>
             <Entry Text="{Binding Password}" Margin="40,0,40,0" HorizontalTextAlignment="Center"  />
 
-            <Button Text="Зайти" Command="{Binding LoginCommand}" Margin="0,80,0,0" WidthRequest="300" HorizontalOptions="Center" />
-            <Button Text="Регистрация" Command="{Binding RegisterCommand}" Margin="0,80,0,0" WidthRequest="300" HorizontalOptions="Center" />
+            <Label Text="Введите пароль еще раз"
+                VerticalOptions="Start" 
+                HorizontalOptions="CenterAndExpand"
+                Margin="0,20,0,0"/>
+            <Entry Text="{Binding Password1}" Margin="40,0,40,0" HorizontalTextAlignment="Center"  />
+
+
+            <Button Text="Зайти" Command="{Binding RegisterCommand}" Margin="0,80,0,0" WidthRequest="300" HorizontalOptions="Center" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

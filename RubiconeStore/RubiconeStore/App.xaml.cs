@@ -16,7 +16,7 @@ namespace RubiconeStore
 
             DependencyService.Register<MockDataStore>();
             //MainPage = new AppShell();
-            MainPage = new LoginPage();
+            MainPage = new NavigationPage(new LoginPage());
         }
 
         protected override void OnStart()

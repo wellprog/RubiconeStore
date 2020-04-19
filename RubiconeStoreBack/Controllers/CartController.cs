@@ -66,7 +66,7 @@ namespace RubiconeStoreBack.Controllers
 
         [HttpPost]
         //Добавляет предмет в корзину
-        public ResponceModel<Sell> addItem(ResponceModel<User> userRequest, ResponceModel<Sell> sellRequest)
+        public ResponceModel<Sell> addItem(AddToCartRequestModel request)
         {
             var user = userRequest.content;
             if (!user.IsModelRight())
