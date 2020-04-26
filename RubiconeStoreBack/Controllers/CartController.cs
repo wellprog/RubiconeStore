@@ -35,7 +35,7 @@ namespace RubiconeStoreBack.Controllers
         //Метод возращает сумму цен товаров в корзине
         public ResponceModel<int> getPrice(RequestModel<User> userRequest)
         {
-            var user = userRequest.content;
+            var user = userRequest.Content;
             if (!user.IsModelRight())
                 return new ResponceModel<int>().UserNotFound();
 
@@ -49,9 +49,9 @@ namespace RubiconeStoreBack.Controllers
         }
 
         //Получает предмет в корзине, который лежит в ней по указанному индексу
-        public ResponceModel<Sell> getItem(RequestModel<User> userRequest, int index)
+        public ResponceModel<Sell> getItem(int index, RequestModel<User> userRequest)
         {
-            var user = userRequest.content;
+            var user = userRequest.Content;
             if (!user.IsModelRight())
                 return new ResponceModel<Sell>().UserNotFound();
 
@@ -66,9 +66,9 @@ namespace RubiconeStoreBack.Controllers
 
         [HttpPost]
         //Добавляет предмет в корзину
-        public ResponceModel<Sell> addItem(RequestModel<User> userRequest, int sellID) //TODO
+        public ResponceModel<Sell> addItem(int index, RequestModel<User> userRequest) //TODO
         {
-            var user = userRequest.content;
+            var user = userRequest.Content;
             if (!user.IsModelRight())
                 return new ResponceModel<Sell>().UserNotFound();
 
@@ -95,9 +95,9 @@ namespace RubiconeStoreBack.Controllers
 
         [HttpDelete]
         //Удаляет предмет из корзины
-        public ResponceModel<Sell> deleteItem(RequestModel<User> userRequest, int sellID) //TODO
+        public ResponceModel<Sell> deleteItem(int sellID, RequestModel<User> userRequest) //TODO
         {
-            var user = userRequest.content;
+            var user = userRequest.Content;
             if (!user.IsModelRight())
                 return new ResponceModel<Sell>().UserNotFound();
 
@@ -121,7 +121,7 @@ namespace RubiconeStoreBack.Controllers
         //Возвращает количество товаров в корзине
         public ResponceModel<int> getCount(RequestModel<User> userRequest)
         {
-            var user = userRequest.content;
+            var user = userRequest.Content;
             if (!user.IsModelRight())
                 return new ResponceModel<int>().UserNotFound();
 
