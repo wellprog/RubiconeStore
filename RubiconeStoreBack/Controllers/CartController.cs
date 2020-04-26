@@ -30,10 +30,10 @@ namespace RubiconeStoreBack.Controllers
             this._store = store;
             this._userHelper = userHelper;
         }
-        
+
         [HttpGet]
         //Метод возращает сумму цен товаров в корзине
-        public ResponceModel<int> getPrice(ResponceModel<User> userRequest)
+        public ResponceModel<int> getPrice(RequestModel<User> userRequest)
         {
             var user = userRequest.content;
             if (!user.IsModelRight())
@@ -47,9 +47,9 @@ namespace RubiconeStoreBack.Controllers
 
             return new ResponceModel<int> { content = userCartPrice };
         }
-        
+
         //Получает предмет в корзине, который лежит в ней по указанному индексу
-        public ResponceModel<Sell> getItem(ResponceModel<User> userRequest, int index)
+        public ResponceModel<Sell> getItem(RequestModel<User> userRequest, int index)
         {
             var user = userRequest.content;
             if (!user.IsModelRight())
@@ -66,13 +66,13 @@ namespace RubiconeStoreBack.Controllers
 
         [HttpPost]
         //Добавляет предмет в корзину
-        public ResponceModel<Sell> addItem(AddToCartRequestModel request)
+        public ResponceModel<Sell> addItem(RequestModel<User> userRequest, int sellID) //TODO
         {
             var user = userRequest.content;
             if (!user.IsModelRight())
                 return new ResponceModel<Sell>().UserNotFound();
 
-            var addedSell = sellRequest.content;
+            var addedSell = _store.Sells.Where(b => b.ID == sellID).FirstOrDefault();
             if (!addedSell.IsModelRight())
                 return new ResponceModel<Sell>().RecordNotFound();
 
@@ -95,13 +95,13 @@ namespace RubiconeStoreBack.Controllers
 
         [HttpDelete]
         //Удаляет предмет из корзины
-        public ResponceModel<Sell> deleteItem(ResponceModel<User> userRequest, ResponceModel<Sell> sellRequest)
+        public ResponceModel<Sell> deleteItem(RequestModel<User> userRequest, int sellID) //TODO
         {
             var user = userRequest.content;
             if (!user.IsModelRight())
                 return new ResponceModel<Sell>().UserNotFound();
 
-            var deletedSell = sellRequest.content;
+            var deletedSell = _store.Sells.Where(b => b.ID == sellID).FirstOrDefault();
             if (!deletedSell.IsModelRight())
                 return new ResponceModel<Sell>().RecordNotFound();
 
@@ -119,7 +119,7 @@ namespace RubiconeStoreBack.Controllers
         }
 
         //Возвращает количество товаров в корзине
-        public ResponceModel<int> getCount(ResponceModel<User> userRequest)
+        public ResponceModel<int> getCount(RequestModel<User> userRequest)
         {
             var user = userRequest.content;
             if (!user.IsModelRight())
