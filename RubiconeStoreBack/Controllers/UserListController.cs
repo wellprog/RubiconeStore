@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace RubiconeStoreBack.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class UserListController : ControllerBase
     {
         private readonly ILogger<UserListController> _logger;

@@ -31,5 +31,11 @@ namespace RubiconeStore.MyViews
         {
             InitializeComponent();
         }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await _viewModel?.Appearing();
+        }
     }
 }
