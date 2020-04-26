@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -22,6 +23,8 @@ namespace Shared.Model
         [JsonIgnore]
         public List<UserSession> UserSessions { get; set; }
         public List<Check> Checks { get; set; } //Его чеки (Истории купленных товаров)
+
+        [NotMapped]
         public Cart Cart { get; set; } //Корзина пользователя
 
         public bool IsModelRight()
