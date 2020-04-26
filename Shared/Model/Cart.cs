@@ -10,10 +10,12 @@ namespace Shared.Model
         public User User { get; set; }
         public List<Sell> Sells { get; set; }
 
-        Cart(User cartOwner)
+        public Cart(User cartOwner)
         {
             User = cartOwner;
         }
+
+        public Cart() { }
 
         public int getPrice()
         {
