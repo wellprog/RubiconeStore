@@ -1,4 +1,5 @@
-﻿using RubiconeStore.MyViewModels;
+﻿using RubiconeStore.MyViewInterfaces;
+using RubiconeStore.MyViewModels;
 
 using System;
 using System.Collections.Generic;

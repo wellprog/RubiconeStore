@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
-namespace RubiconeStore.MyViewModels
+namespace RubiconeStore.MyViewInterfaces
 {
     public interface ITableViewModel
     {

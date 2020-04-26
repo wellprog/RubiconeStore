@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RubiconeStore.DataStores;
 using RubiconeStore.MyModels;
+using RubiconeStore.MyViewInterfaces;
 using Shared.Model;
 using System;
 using System.Collections.Generic;

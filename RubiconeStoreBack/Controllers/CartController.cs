@@ -72,11 +72,11 @@ namespace RubiconeStoreBack.Controllers
             if (!user.IsModelRight())
                 return new ResponceModel<Sell>().UserNotFound();
 
-            var addedSell = _store.Sells.Where(b => b.ID == sellID).FirstOrDefault();
+            var addedSell = _store.Sells.Where(b => b.ID == index).FirstOrDefault();
             if (!addedSell.IsModelRight())
                 return new ResponceModel<Sell>().RecordNotFound();
 
-            var userCart = userRequest.content.Cart;
+            var userCart = userRequest.Content.Cart;
             if (userCart == null)
                 return new ResponceModel<Sell>().RecordNotFound();
 
@@ -105,7 +105,7 @@ namespace RubiconeStoreBack.Controllers
             if (!deletedSell.IsModelRight())
                 return new ResponceModel<Sell>().RecordNotFound();
 
-            var userCart = userRequest.content.Cart;
+            var userCart = userRequest.Content.Cart;
             if (userCart == null)
                 return new ResponceModel<Sell>().RecordNotFound();
 

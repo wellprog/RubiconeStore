@@ -1,4 +1,5 @@
 ﻿using RubiconeStore.MyModels;
+using RubiconeStore.MyViewInterfaces;
 using RubiconeStore.MyViews;
 
 using System;
