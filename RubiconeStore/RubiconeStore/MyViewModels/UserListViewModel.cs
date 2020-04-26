@@ -19,6 +19,7 @@ namespace RubiconeStore.MyViewModels
         public string PageName => "Список пользователей";
 
         public ObservableCollection<IExecutableModel> Elements { get; private set; }
+        public IEnumerable<ToolbarItem> ToolbarItems { get; } = new ToolbarItem[0];
 
         public Page Page { get; set; }
         private readonly HttpClient httpClient;
@@ -52,12 +53,14 @@ namespace RubiconeStore.MyViewModels
 
             foreach (var item in model.content)
             {
-                new ActionModel<User>(item)
-                {
-                    Text = item.Login,
-                    Description = item.Email,
-                    ExecAction = async (user) => { await Page?.DisplayAlert("User", user.Email, "Ok"); }
-                };
+                Elements.Add(
+                    new ActionModel<User>(item)
+                    {
+                        Text = item.Login,
+                        Description = item.Email,
+                        ExecAction = async (user) => { await Page?.DisplayAlert("User", user.Email, "Ok"); }
+                    }
+                );
             }
         }
     }

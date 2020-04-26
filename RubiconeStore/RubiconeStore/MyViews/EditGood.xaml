@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Title="Редактирование товара"
+             x:Class="RubiconeStore.MyViews.EditGood">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Наименование товара" Margin="0, 40, 0, 0" HorizontalTextAlignment="Center" />
+            <Entry Text="{Binding Title}" />
+
+            <Label Text="Описание товара" Margin="0, 40, 0, 0" HorizontalTextAlignment="Center" />
+            <Entry Text="{Binding Text}" />
+
+
+            <Label Text="Цена товара" Margin="0, 40, 0, 0" HorizontalTextAlignment="Center" />
+            <Entry Text="{Binding Price}" />
+
+            <Label Text="Категория товара" Margin="0, 40, 0, 0" HorizontalTextAlignment="Center" />
+            <Picker Title="Категория" SelectedIndex="{Binding GoodCategoryID}">
+                <Picker.Items>
+                    <x:String>123</x:String>
+                    <x:String>321</x:String>
+                    <x:String>213</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <Button Text="Создать" Command="{Binding SaveCommand}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

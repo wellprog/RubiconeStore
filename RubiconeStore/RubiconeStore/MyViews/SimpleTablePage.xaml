@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:el="clr-namespace:RubiconeStore.MyModels"
              mc:Ignorable="d"
+             Title="{Binding PageName}"
              x:Class="RubiconeStore.MyViews.SimpleTablePage">
 
     <CollectionView x:Name="ItemsCollectionView"

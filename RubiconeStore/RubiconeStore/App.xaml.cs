@@ -14,9 +14,11 @@ namespace RubiconeStore
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
+            //DependencyService.Register<MockDataStore>();
             //MainPage = new AppShell();
+
             MainPage = new NavigationPage(new LoginPage());
+            //MainPage = new NavigationPage(new EditGood());
         }
 
         protected override void OnStart()
