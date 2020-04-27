@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RubiconeStore.DataStores;
+using RubiconeStore.Helpers;
 using RubiconeStore.MyModels;
 using RubiconeStore.MyViewInterfaces;
 using Shared.Model;
@@ -23,11 +24,13 @@ namespace RubiconeStore.MyViewModels
 
         public Page Page { get; set; }
         private readonly HttpClient httpClient;
+        private readonly RequestHelper requestHelper;
         private readonly SessionDataStore sessionData;
 
         public UserListViewModel()
         {
             httpClient = new HttpClient();
+            requestHelper = new RequestHelper(httpClient);
             sessionData = new SessionDataStore();
 
             Elements = new ObservableCollection<IExecutableModel>();
@@ -35,23 +38,12 @@ namespace RubiconeStore.MyViewModels
 
         public async Task Appearing()
         {
-            var responce = await httpClient.GetAsync("http://rstore.kikoriki.space/UserList?AuthKey=" + sessionData.UserAuthModel.UserSession.SessionToken);
-            if (responce.StatusCode != System.Net.HttpStatusCode.OK)
+            IEnumerable<User> model = await requestHelper.Get<IEnumerable<User>>("http://rstore.kikoriki.space/UserList", new Dictionary<string, object>
             {
-                await Page?.DisplayAlert("Ошибка запроса", "Во время запроса произошла ошибка", "Ok");
-                return;
-            }
+                { "AuthKey", sessionData.UserAuthModel.UserSession.SessionToken }
+            });
 
-            var jsonString = await responce.Content.ReadAsStringAsync();
-            ResponceModel<IEnumerable<User>> model = JsonConvert.DeserializeObject<ResponceModel<IEnumerable<User>>>(jsonString);
-
-            if (model.ErrorCode != 0)
-            {
-                await Page?.DisplayAlert("Ошибка запроса", model.ErrorDescription, "Ok");
-                return;
-            }
-
-            foreach (var item in model.content)
+            foreach (var item in model)
             {
                 Elements.Add(
                     new ActionModel<User>(item)

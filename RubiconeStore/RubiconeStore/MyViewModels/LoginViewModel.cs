@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 using RubiconeStore.DataStores;
+using RubiconeStore.Helpers;
 using RubiconeStore.MyViews;
 
 using Shared.Model;
@@ -19,7 +20,7 @@ namespace RubiconeStore.MyViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        private readonly HttpClient httpClient;
+        private readonly RequestHelper requestHelper;
         private readonly SessionDataStore _sessionDataStore;
         private readonly Page page;
 
@@ -52,7 +53,7 @@ namespace RubiconeStore.MyViewModels
 
         public LoginViewModel(Page page)
         {
-            httpClient = new HttpClient();
+            requestHelper = new RequestHelper(new HttpClient());
             this.page = page;
             _sessionDataStore = new SessionDataStore();
 
@@ -74,24 +75,13 @@ namespace RubiconeStore.MyViewModels
                 return;
             }
 
-            var responce = await httpClient.GetAsync("http://rstore.kikoriki.space/User?email=" + HttpUtility.UrlEncode(login) + "&password=" + HttpUtility.UrlEncode(password));
-            if (responce.StatusCode != System.Net.HttpStatusCode.OK)
+            UserAuthModel model = await requestHelper.Get<UserAuthModel>("http://rstore.kikoriki.space/User", new Dictionary<string, object>
             {
-                await page.DisplayAlert("Ошибка запроса", "Во время запроса произошла ошибка", "Ok");
-                return;
-            }
+                { "email", login },
+                { "password", password }
+            });
 
-            var jsonString = await responce.Content.ReadAsStringAsync();
-            ResponceModel<UserAuthModel> model = JsonConvert.DeserializeObject<ResponceModel<UserAuthModel>>(jsonString);
- 
-            if (model.ErrorCode != 0)
-            {
-                await page.DisplayAlert("Ошибка запроса", model.ErrorDescription, "Ok");
-                return;
-            }
-
-
-            _sessionDataStore.UserAuthModel = model.content;
+            _sessionDataStore.UserAuthModel = model;
 
             ShowNext();
         }

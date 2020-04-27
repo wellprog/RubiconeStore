@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RubiconeStore.DataStores;
+using RubiconeStore.Helpers;
 using Shared.Model;
 
 using System;
@@ -17,6 +18,7 @@ namespace RubiconeStore.MyViewModels
     {
         private readonly User _user;
         private readonly HttpClient _httpClient;
+        private readonly RequestHelper requestHelper;
         private readonly Page _page;
         private readonly SessionDataStore _sessionDataStore;
 
@@ -83,31 +85,15 @@ namespace RubiconeStore.MyViewModels
             _user = new User();
             RegisterCommand = new Command(RegisterIt, CanRegister);
             _httpClient = new HttpClient();
+            requestHelper = new RequestHelper(_httpClient);
             _page = page;
             _sessionDataStore = new SessionDataStore();
         }
 
         async void RegisterIt()
         {
-            var stringPayload = JsonConvert.SerializeObject(_user);
-            var content = new StringContent(stringPayload, Encoding.UTF8, "application/json");
-            var responce = await _httpClient.PostAsync("http://rstore.kikoriki.space/User", content);
-
-            if (responce.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                await _page.DisplayAlert("Ошибка запроса", "Во время запроса произошла ошибка", "Ok");
-                return;
-            }
-
-            var jsonString = await responce.Content.ReadAsStringAsync();
-            ResponceModel<UserAuthModel> model = JsonConvert.DeserializeObject<ResponceModel<UserAuthModel>>(jsonString);
-
-            if (model.ErrorCode != 0)
-            {
-                await _page.DisplayAlert("Ошибка запроса", model.ErrorDescription, "Ok");
-                return;
-            }
-
+            await requestHelper.Post<UserAuthModel, User>("http://rstore.kikoriki.space/User", new Dictionary<string, object>(), _user);
+            
             await _page.Navigation.PopModalAsync();
         }
 
