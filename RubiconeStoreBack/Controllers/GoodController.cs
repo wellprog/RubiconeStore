@@ -31,16 +31,6 @@ namespace RubiconeStoreBack.Controllers
             this._userHelper = userHelper;
         }
 
-        [HttpGet]
-        public ResponceModel<IEnumerable<Good>> GetAll(string AuthKey)
-        {
-            var responce = _userHelper.IsUserAutorized<IEnumerable<Good>>(AuthKey);
-            if (responce != null) return responce;
-
-            var resp = _store.Goods.Include(f => f.GoodCategory).Include(f => f.GoodPropertyValues).ThenInclude(f => f.GoodProperty);
-            return new ResponceModel<IEnumerable<Good>> { content = resp };
-        }
-
         [HttpPost]
         public ResponceModel<Good> StoreOne(RequestModel<Good> request)
         {
