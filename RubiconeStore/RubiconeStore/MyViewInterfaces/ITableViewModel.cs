@@ -1,4 +1,6 @@
 ﻿using RubiconeStore.MyModels;
+
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -12,5 +14,6 @@ namespace RubiconeStore.MyViewInterfaces
         Page Page { get; set; }
         ObservableCollection<IExecutableModel> Elements { get; }
         Task Appearing();
+        IEnumerable<ToolbarItem> ToolbarItems { get; }
     }
 }

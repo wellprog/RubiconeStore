@@ -41,10 +41,13 @@ namespace Shared.Model
 
         /************************************************/
         // Relations
+        [JsonIgnore]
         [NoCopy]
         public GoodCategory GoodCategory { get; set; }
+        [JsonIgnore]
         [NoCopy]
         public List<GoodPropertyValue> GoodPropertyValues { get; set; }
+        [JsonIgnore]
         [NoCopy]
         public List<Storage> Storages { get; set; }
 

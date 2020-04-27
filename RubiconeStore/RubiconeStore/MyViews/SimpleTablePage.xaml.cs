@@ -24,6 +24,7 @@ namespace RubiconeStore.MyViews
                 _viewModel = value;
                 _viewModel.Page = this;
                 BindingContext = _viewModel;
+                setupButtons();
             }
         }
 
@@ -36,6 +37,12 @@ namespace RubiconeStore.MyViews
         {
             base.OnAppearing();
             await _viewModel?.Appearing();
+        }
+
+        private void setupButtons()
+        {
+            foreach (var item in _viewModel.ToolbarItems)
+                ToolbarItems.Add(item);
         }
     }
 }
