@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Shared.Model
 {
@@ -15,7 +16,9 @@ namespace Shared.Model
         /************************************************/
         // Relations
 
+        [JsonIgnore]
         public User User { get; set; }
+        [JsonIgnore]
         public List<Sell> Sells { get; set; }
 
         public int getPrice()

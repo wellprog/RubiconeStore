@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Shared.Model
 {
@@ -14,7 +15,9 @@ namespace Shared.Model
 
         /************************************************/
         // Relations
+        [JsonIgnore]
         public GoodCategory GoodCategory { get; set; }
+        [JsonIgnore]
         public List<GoodPropertyValue> GoodPropertyValues { get; set; }
     }
 }

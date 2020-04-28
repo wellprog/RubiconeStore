@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Shared.Model
 {
@@ -11,7 +12,9 @@ namespace Shared.Model
         public int GoodID { get; set; }
         public string Value { get; set; }
 
+        [JsonIgnore]
         public GoodProperty GoodProperty { get; set; }
+        [JsonIgnore]
         public Good Good { get; set; }
     }
 }
