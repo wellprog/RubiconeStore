@@ -23,14 +23,12 @@ namespace RubiconeStore.MyViewModels
         public IEnumerable<ToolbarItem> ToolbarItems { get; } = new ToolbarItem[0];
 
         public Page Page { get; set; }
-        private readonly HttpClient httpClient;
         private readonly RequestHelper requestHelper;
         private readonly SessionDataStore sessionData;
 
         public UserListViewModel()
         {
-            httpClient = new HttpClient();
-            requestHelper = new RequestHelper(httpClient);
+            requestHelper = new RequestHelper();
             sessionData = new SessionDataStore();
 
             Elements = new ObservableCollection<IExecutableModel>();

@@ -17,7 +17,6 @@ namespace RubiconeStore.MyViewModels
     class RegisterViewModel : BaseViewModel
     {
         private readonly User _user;
-        private readonly HttpClient _httpClient;
         private readonly RequestHelper requestHelper;
         private readonly Page _page;
         private readonly SessionDataStore _sessionDataStore;
@@ -84,8 +83,7 @@ namespace RubiconeStore.MyViewModels
         {
             _user = new User();
             RegisterCommand = new Command(RegisterIt, CanRegister);
-            _httpClient = new HttpClient();
-            requestHelper = new RequestHelper(_httpClient);
+            requestHelper = new RequestHelper();
             _page = page;
             _sessionDataStore = new SessionDataStore();
         }

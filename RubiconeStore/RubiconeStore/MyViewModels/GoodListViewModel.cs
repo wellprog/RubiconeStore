@@ -23,7 +23,6 @@ namespace RubiconeStore.MyViewModels
         public IEnumerable<ToolbarItem> ToolbarItems { get; }
 
         public Page Page { get; set; }
-        private readonly HttpClient httpClient;
         private readonly SessionDataStore sessionData;
         private readonly RequestHelper requestHelper;
 
@@ -32,11 +31,10 @@ namespace RubiconeStore.MyViewModels
             var buttons = new ToolbarItem[1];
             buttons[0] = new ToolbarItem("Add", "", AddGood);
             ToolbarItems = buttons;
-
-            httpClient = new HttpClient();
+            
             sessionData = new SessionDataStore();
 
-            requestHelper = new RequestHelper(httpClient);
+            requestHelper = new RequestHelper();
 
             Elements = new ObservableCollection<IExecutableModel>();
         }

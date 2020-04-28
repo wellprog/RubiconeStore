@@ -19,6 +19,11 @@ namespace RubiconeStore.Helpers
             this.httpClient = httpClient;
         }
 
+        public RequestHelper()
+        {
+            this.httpClient = new HttpClient();
+        }
+
         public async Task<T> Get<T>(string URL, Dictionary<string, object> queryParams)
         {
             string url = URL + "?" + string.Join("&", queryParams.Select(f => f.Key + "=" + HttpUtility.UrlEncode(f.Value.ToString())));

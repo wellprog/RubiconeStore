@@ -53,7 +53,7 @@ namespace RubiconeStore.MyViewModels
 
         public LoginViewModel(Page page)
         {
-            requestHelper = new RequestHelper(new HttpClient());
+            requestHelper = new RequestHelper();
             this.page = page;
             _sessionDataStore = new SessionDataStore();
 
