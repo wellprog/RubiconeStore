@@ -47,7 +47,7 @@ namespace RubiconeStore.MyViewModels
         public async Task Appearing()
         {
 
-            var items = await requestHelper.Get<IEnumerable<Good>>("http://rstore.kikoriki.space/Good", new Dictionary<string, object>
+            var items = await requestHelper.Get<IEnumerable<Good>>("http://rstore.kikoriki.space/GoodList", new Dictionary<string, object>
             {
                 { "AuthKey", sessionData.UserAuthModel.UserSession.SessionToken}
             });

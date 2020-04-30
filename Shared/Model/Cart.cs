@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Shared.Model
 {
-    //Класс корзины. По задумке хранится на устройстве
+    //Класс корзины
     public class Cart
     {
         public User User { get; set; }
