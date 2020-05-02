@@ -35,6 +35,7 @@ namespace RubiconeStoreBack.Controllers
         //Метод возращает сумму цен товаров в корзине
         public ResponceModel<int> getPrice(RequestModel<User> userRequest)
         {
+            //Проверяем все входные данные на корректность
             var user = userRequest.Content;
             if (!user.IsModelRight())
                 return new ResponceModel<int>().UserNotFound();
@@ -43,6 +44,7 @@ namespace RubiconeStoreBack.Controllers
             if (userCart == null)
                 return new ResponceModel<int>().RecordNotFound();
 
+            //Через метод класса Cart получаем сумму товаров (В будущем для этого можно будет выделить переменную в классе Cart, чтобы каждый раз заново не считать сумму стоимостей покупок)
             int userCartPrice = userCart.getPrice();
 
             return new ResponceModel<int> { content = userCartPrice };
@@ -51,6 +53,7 @@ namespace RubiconeStoreBack.Controllers
         //Получает предмет в корзине, который лежит в ней по указанному индексу
         public ResponceModel<Sell> getItem(int index, RequestModel<User> userRequest)
         {
+            //Проверяем все входные данные на корректность
             var user = userRequest.Content;
             if (!user.IsModelRight())
                 return new ResponceModel<Sell>().UserNotFound();
@@ -59,6 +62,7 @@ namespace RubiconeStoreBack.Controllers
             if (userCart == null)
                 return new ResponceModel<Sell>().RecordNotFound();
 
+            //Прямо из корзины забираем Sell
             Sell gettedItem = userCart.Sells[index];
 
             return new ResponceModel<Sell> { content = gettedItem };
@@ -66,13 +70,14 @@ namespace RubiconeStoreBack.Controllers
 
         [HttpPost]
         //Добавляет предмет в корзину
-        public ResponceModel<Sell> addItem(int index, RequestModel<User> userRequest) //TODO
+        public ResponceModel<Sell> addItem(int sellID, RequestModel<User> userRequest)
         {
+            //Проверяем все входные данные на корректность
             var user = userRequest.Content;
             if (!user.IsModelRight())
                 return new ResponceModel<Sell>().UserNotFound();
 
-            var addedSell = _store.Sells.Where(b => b.ID == index).FirstOrDefault();
+            var addedSell = _store.Sells.Where(b => b.ID == sellID).FirstOrDefault();
             if (!addedSell.IsModelRight())
                 return new ResponceModel<Sell>().RecordNotFound();
 
@@ -80,14 +85,12 @@ namespace RubiconeStoreBack.Controllers
             if (userCart == null)
                 return new ResponceModel<Sell>().RecordNotFound();
 
-            //addedSell.CheckID = userCart.ID; //Товар не куплен - нигде не метим его принадлежность к корзине
+            //Добавляем addedSell в UserCart
+            addedSell.CheckID = userCart.ID;
             userCart.Sells.Add(addedSell);
-
+            //Сохраняем изменения в БД
+            _store.Update<Sell>(addedSell); //!
             _store.Update<User>(user); //!
-            //or
-            //_store.Remove<User>(user);
-            //*Edit user*
-            //_store.Add<User>(user);
             _store.SaveChanges();
 
             return new ResponceModel<Sell> { content = addedSell };
@@ -95,8 +98,9 @@ namespace RubiconeStoreBack.Controllers
 
         [HttpDelete]
         //Удаляет предмет из корзины
-        public ResponceModel<Sell> deleteItem(int sellID, RequestModel<User> userRequest) //TODO
+        public ResponceModel<Sell> deleteItem(int sellID, RequestModel<User> userRequest)
         {
+            //Проверяем все входные данные на корректность
             var user = userRequest.Content;
             if (!user.IsModelRight())
                 return new ResponceModel<Sell>().UserNotFound();
@@ -109,10 +113,11 @@ namespace RubiconeStoreBack.Controllers
             if (userCart == null)
                 return new ResponceModel<Sell>().RecordNotFound();
 
-            //deletedSell.CheckID = 0; //Товар не куплен, но выложен - нигде не метили его принадлежность к корзине, нигде и не будем метить, что он ей теперь не принадлежит
+            //Удаляем addedSell из UserCart
+            addedSell.CheckID = null; //! Вероятно, лучше удалить addedSell вообще из БД, так как Sell лежащие в корзине не влияют на Storages, и удалив их оттуда к ним нельзя вернуться
             userCart.Sells.Remove(deletedSell);
-
-            _store.Update<User>(user);
+            _store.Update<Sell>(addedSell); //!
+            _store.Update<User>(user); //!
             _store.SaveChanges();
 
             return new ResponceModel<Sell> { content = deletedSell };
@@ -126,11 +131,14 @@ namespace RubiconeStoreBack.Controllers
                 return new ResponceModel<int>().UserNotFound();
 
             var userCart = user.Cart;
+            if (userCart == null)
+                return new ResponceModel<Sell>().RecordNotFound();
+
             int userCartItemsCount = userCart.Sells.Count;
 
             return new ResponceModel<int> { content = userCartItemsCount };
         }
 
-        //pay() //Через паттерн "Адаптер" легко превратит Cart в Check, внесет Check в БД, и создаст новую Cart для следующих покупок пользователя
+        //pay() //Через паттерн "Адаптер" легко превратит Cart в Check
     }
 }
