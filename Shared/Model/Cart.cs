@@ -8,7 +8,16 @@ namespace Shared.Model
     //Класс корзины
     public class Cart
     {
+        public int ID { get; set; }
+        public int UserID { get; set; }
+        public DateTime CreatedDate { get; set; }
+
+        /************************************************/
+        // Relations
+
+        [JsonIgnore]
         public User User { get; set; }
+        [JsonIgnore]
         public List<Sell> Sells { get; set; }
 
         public Cart(User cartOwner)

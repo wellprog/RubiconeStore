@@ -23,10 +23,9 @@ namespace Shared.Model
         [JsonIgnore]
         public List<UserSession> UserSessions { get; set; }
         [JsonIgnore]
-        public List<Check> Checks { get; set; } //Его чеки (Истории купленных товаров)
-        [NotMapped] //Это на время, пока Cart.cs не появится в БД :)
+        public List<Check> Checks { get; set; }
         [JsonIgnore]
-        public Cart Cart { get; set; } //Корзина пользователя
+        public Cart Cart { get; set; }
 
         public bool IsModelRight()
         {

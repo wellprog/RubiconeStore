@@ -21,6 +21,7 @@ namespace RubiconeStoreBack.DataAccess
         public DbSet<GoodCategory> GoodCategories { get; set; }
         public DbSet<GoodProperty> GoodProperties { get; set; }
         public DbSet<GoodPropertyValue> GoodPropertyValues { get; set; }
+        public DbSet<Cart> Carts { get; set; }
 
         public DbStore(string connectionString)
         {
