@@ -5,6 +5,7 @@ using Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Xamarin.Forms;
 
@@ -72,6 +73,12 @@ namespace RubiconeStore.MyViewModels
                 });
 
             await page.Navigation.PopAsync();
+        }
+
+        protected override void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            SaveCommand.ChangeCanExecute();
+            base.OnPropertyChanged(propertyName);
         }
     }
 }

@@ -26,6 +26,7 @@ namespace RubiconeStore.MyModels
         public Func<T, Task> ExecAction { get; set; }
         public T Parametr { get; set; }
         public ICommand Command { get; private set; }
+        //IEnumerable<{Command, color, text}> Actions { get; }
 
         public ActionModel(T parametr)
         {
