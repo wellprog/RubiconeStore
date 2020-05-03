@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 namespace RubiconeStoreBack.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class UserListController : ControllerBase
     {
         private readonly ILogger<UserListController> _logger;
@@ -26,6 +25,7 @@ namespace RubiconeStoreBack.Controllers
         }
 
         [HttpGet]
+        [Route("[controller]/{AuthKey}")]
         public ResponceModel<IEnumerable<User>> GetAll(string AuthKey)
         {
             var responce = _userHelper.IsUserAutorized<IEnumerable<User>>(AuthKey);

@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 namespace RubiconeStoreBack.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class GoodCategoryController
     {
         private readonly ILogger<UserListController> _logger;
@@ -29,6 +28,7 @@ namespace RubiconeStoreBack.Controllers
         }
 
         [HttpGet]
+        [Route("[controller]/{AuthKey}")]
         public ResponceModel<IEnumerable<GoodCategory>> GetAll(string AuthKey)
         {
             var responce = _userHelper.IsUserAutorized<IEnumerable<GoodCategory>>(AuthKey);

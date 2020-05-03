@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 namespace RubiconeStoreBack.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class GoodPropertyController
     {
         private readonly ILogger<UserListController> _logger;
