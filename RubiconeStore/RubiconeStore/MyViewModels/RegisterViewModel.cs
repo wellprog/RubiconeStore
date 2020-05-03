@@ -90,7 +90,7 @@ namespace RubiconeStore.MyViewModels
 
         async void RegisterIt()
         {
-            await requestHelper.Post<UserAuthModel, User>("http://rstore.kikoriki.space/User", new Dictionary<string, object>(), _user);
+            await requestHelper.Post<UserAuthModel, User>("http://rstore.kikoriki.space/User", _user);
             
             await _page.Navigation.PopModalAsync();
         }

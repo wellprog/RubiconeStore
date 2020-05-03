@@ -5,6 +5,7 @@ using Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -69,15 +70,16 @@ namespace RubiconeStore.MyViewModels
             }
         }
 
-        public int GoodCategoryID
+        private int _goodCategoryIndex = 0;
+        public int GoodCategoryIndex
         {
             get
             {
-                return good.GoodCategoryID;
+                return _goodCategoryIndex;
             }
             set
             {
-                good.GoodCategoryID = value;
+                _goodCategoryIndex = value;
                 OnPropertyChanged();
             }
         }
@@ -94,24 +96,33 @@ namespace RubiconeStore.MyViewModels
 
         public async void SaveGood()
         {
-            await requestHelper.Post<Good, RequestModel<Good>>("http://rstore.kikoriki.space/Good", new Dictionary<string, object>(), new RequestModel<Good>() { 
-                Content = good,
-                AuthKey = sessionData.UserAuthModel.UserSession.SessionToken
-            });
+            good.GoodCategoryID = Categories[GoodCategoryIndex].ID;
+
+            if (good.ID == 0)
+                await requestHelper.Post<Good, RequestModel<Good>>("http://rstore.kikoriki.space/Good", new RequestModel<Good>()
+                {
+                    Content = good,
+                    AuthKey = sessionData.UserAuthModel.UserSession.SessionToken
+                });
+            else
+                await requestHelper.Patch<Good, RequestModel<Good>>("http://rstore.kikoriki.space/Good", new RequestModel<Good>()
+                {
+                    Content = good,
+                    AuthKey = sessionData.UserAuthModel.UserSession.SessionToken
+                });
 
             await page.Navigation.PopAsync();
         }
 
         public async Task Appearing()
         {
-            var items = await requestHelper.Get<IEnumerable<GoodCategory>>("http://rstore.kikoriki.space/GoodCategory", new Dictionary<string, object>
-            {
-                { "AuthKey", sessionData.UserAuthModel.UserSession.SessionToken }
-            });
+            var items = await requestHelper.Get<IEnumerable<GoodCategory>>($"http://rstore.kikoriki.space/GoodCategory/{ sessionData.SessionToken }");
 
-
+            Categories.Clear();
             foreach (var item in items)
                 Categories.Add(item);
+
+            GoodCategoryIndex = Categories.IndexOf(Categories.Where(f => f.ID == good.GoodCategoryID).FirstOrDefault());
         }
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = "")

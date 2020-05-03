@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Shared.Model
 {
-    public class GoodCategory
+    public class GoodCategory : IValidate, IPK
     {
         public int ID { get; set; }
         public string Name { get; set; } = "";
@@ -18,5 +18,12 @@ namespace Shared.Model
         public List<Good> Goods { get; set; }
         [JsonIgnore]
         public List<GoodProperty> GoodProperties { get; set; }
+
+        public bool IsModelRight() => !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Description);
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

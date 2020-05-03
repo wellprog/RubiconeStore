@@ -24,36 +24,42 @@ namespace RubiconeStore.Helpers
             this.httpClient = new HttpClient();
         }
 
-        public async Task<T> Get<T>(string URL, Dictionary<string, object> queryParams)
+        public async Task<T> Get<T>(string URL, Dictionary<string, object> queryParams = null)
         {
-            string url = URL + "?" + string.Join("&", queryParams.Select(f => f.Key + "=" + HttpUtility.UrlEncode(f.Value.ToString())));
+            string url = Url(URL, queryParams);
 
             var responce = await httpClient.GetAsync(url);
             return await GetResponce<T>(responce);
         }
         
-        public async Task<T> Delete<T>(string URL, Dictionary<string, object> queryParams)
+        public async Task<T> Delete<T>(string URL, Dictionary<string, object> queryParams = null)
         {
-            string url = URL + "?" + string.Join("&", queryParams.Select(f => f.Key + "=" + HttpUtility.UrlEncode(f.Value.ToString())));
+            string url = Url(URL, queryParams);
 
             var responce = await httpClient.DeleteAsync(url);
             return await GetResponce<T>(responce);
         }
 
-        public async Task<T> Post<T, Req>(string URL, Dictionary<string, object> queryParams, Req request)
+        public async Task<T> Post<T, Req>(string URL, Req request, Dictionary<string, object> queryParams = null)
         {
-            string url = URL + "?" + string.Join("&", queryParams.Select(f => f.Key + "=" + HttpUtility.UrlEncode(f.Value.ToString())));
+            string url = Url(URL, queryParams);
             var responce = await httpClient.PostAsync(url, new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
             return await GetResponce<T>(responce);
         }
 
-        public async Task<T> Put<T, Req>(string URL, Dictionary<string, object> queryParams, Req request)
+        public async Task<T> Put<T, Req>(string URL, Req request, Dictionary<string, object> queryParams = null)
         {
-            string url = URL + "?" + string.Join("&", queryParams.Select(f => f.Key + "=" + HttpUtility.UrlEncode(f.Value.ToString())));
+            string url = Url(URL, queryParams);
             var responce = await httpClient.PutAsync(url, new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
             return await GetResponce<T>(responce);
         }
 
+        public async Task<T> Patch<T, Req>(string URL, Req request, Dictionary<string, object> queryParams = null)
+        {
+            string url = Url(URL, queryParams);
+            var responce = await httpClient.SendAsync(new HttpRequestMessage(new HttpMethod("PATCH"), url) { Content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json") });
+            return await GetResponce<T>(responce);
+        }
 
         private static async Task<T> GetResponce<T>(HttpResponseMessage responce)
         {
@@ -70,6 +76,12 @@ namespace RubiconeStore.Helpers
 
             return model.content;
         }
+
+
+        private string Url(string URL, Dictionary<string, object> queryParams = null) => 
+                queryParams == null ?
+                URL :
+                URL + "?" + string.Join("&", queryParams.Select(f => f.Key + "=" + HttpUtility.UrlEncode(f.Value.ToString())));
 
     }
 }

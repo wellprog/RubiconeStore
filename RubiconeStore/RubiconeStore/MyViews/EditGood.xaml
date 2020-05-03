@@ -19,13 +19,7 @@
             <Entry Text="{Binding Price}" />
 
             <Label Text="Категория товара" Margin="0, 40, 0, 0" HorizontalTextAlignment="Center" />
-            <Picker Title="Категория" SelectedIndex="{Binding GoodCategoryID}">
-                <Picker.Items>
-                    <x:String>123</x:String>
-                    <x:String>321</x:String>
-                    <x:String>213</x:String>
-                </Picker.Items>
-            </Picker>
+            <Picker Title="Категория" SelectedIndex="{Binding GoodCategoryIndex}" ItemsSource="{Binding Categories}" ItemDisplayBinding="{Binding Name}"></Picker>
 
             <Button Text="Создать" Command="{Binding SaveCommand}" />
         </StackLayout>

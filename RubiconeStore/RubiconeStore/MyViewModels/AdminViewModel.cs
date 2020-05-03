@@ -35,8 +35,9 @@ namespace RubiconeStore.MyViewModels
             Elements = new ObservableCollection<IExecutableModel>();
 
             Elements.Add(new ActionModel<Actions>(Actions.User) { Text = "Пользователи", ExecAction = ExecAction });
-            Elements.Add(new ActionModel<Actions>(Actions.Good) { Text = "Товары", ExecAction = ExecAction });
             Elements.Add(new ActionModel<Actions>(Actions.Category) { Text = "Категории товаров", ExecAction = ExecAction });
+            Elements.Add(new ActionModel<Actions>(Actions.Good) { Text = "Товары", ExecAction = ExecAction });
+            
         }
 
         private async Task ExecAction(Actions a)
@@ -45,6 +46,7 @@ namespace RubiconeStore.MyViewModels
             {
                 case Actions.User: await Page?.Navigation.PushAsync(new SimpleTablePage() { ViewModel = new UserListViewModel() }); break;
                 case Actions.Good: await Page?.Navigation.PushAsync(new SimpleTablePage() { ViewModel = new GoodListViewModel() }); break;
+                case Actions.Category: await Page?.Navigation.PushAsync(new SimpleTablePage() { ViewModel = new GoodCategoryListViewModel() }); break;
                 default: await Page.DisplayAlert("Ошибка", "Такого акшена пока нет", "Ok"); break;
             }
 

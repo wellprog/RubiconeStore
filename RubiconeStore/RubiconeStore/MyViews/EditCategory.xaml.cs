@@ -5,7 +5,6 @@ using Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,21 +14,21 @@ using Xamarin.Forms.Xaml;
 namespace RubiconeStore.MyViews
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EditGood : ContentPage
+    public partial class EditCategory : ContentPage
     {
-        private readonly EditGoodViewModel model;
-        public EditGood() : this(new Good()) { }
+        private readonly EditCategoryViewModel _model;
 
-        public EditGood(Good good)
+        public EditCategory() : this(new GoodCategory()) { }
+
+        public EditCategory(GoodCategory category)
         {
             InitializeComponent();
-            model = new EditGoodViewModel(good, new HttpClient(), this);
-            BindingContext = model;
+            _model = new EditCategoryViewModel(category, new System.Net.Http.HttpClient(), this);
+            BindingContext = _model;
         }
 
         protected async override void OnAppearing()
         {
-            await model.Appearing();
             base.OnAppearing();
         }
     }

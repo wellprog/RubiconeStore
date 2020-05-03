@@ -26,5 +26,7 @@ namespace RubiconeStore.DataStores
                 app.Properties.Add(userSession, value);
             } 
         }
+
+        public string SessionToken => UserAuthModel?.UserSession.SessionToken;
     }
 }

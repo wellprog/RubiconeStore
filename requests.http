@@ -1,5 +1,6 @@
-@AuthKey = becc5c24-998a-43e8-912f-8480ddcca77a
-@BaseUrl = http://localhost:60521
+@AuthKey = c4a6de5b-1be8-48be-b74f-e89fe80d48e0
+//@BaseUrl = http://localhost:60521
+@BaseUrl = http://kikoriki.space:5000
 
 ### Login
 GET http://kikoriki.space:5000/User?email=test&password=test
@@ -34,5 +35,12 @@ Content-Type: application/json
 
 
 ### GoodProperty
-
 GET {{BaseUrl}}/GoodProperty/{{AuthKey}}
+
+
+### UserList
+GET {{BaseUrl}}/UserList/{{AuthKey}}
+
+
+### GoodCategory
+GET {{BaseUrl}}/GoodCategory/{{AuthKey}}

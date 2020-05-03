@@ -8,56 +8,55 @@ using Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace RubiconeStore.MyViewModels
 {
-    public class GoodListViewModel : BaseViewModel, ITableViewModel
+    public class GoodCategoryListViewModel : BaseViewModel, ITableViewModel
     {
-        public string PageName => "Список товаров";
+        public string PageName => "Список категорий";
 
         public ObservableCollection<IExecutableModel> Elements { get; private set; }
-        public IEnumerable<ToolbarItem> ToolbarItems { get; }
+        public IEnumerable<ToolbarItem> ToolbarItems { get; } = new ToolbarItem[1];
 
         public Page Page { get; set; }
-        private readonly SessionDataStore sessionData;
         private readonly RequestHelper requestHelper;
+        private readonly SessionDataStore sessionData;
 
-        public GoodListViewModel()
+        public GoodCategoryListViewModel()
         {
             var buttons = new ToolbarItem[1];
-            buttons[0] = new ToolbarItem("Add", "", AddGood);
+            buttons[0] = new ToolbarItem("Add", "", AddCategory);
             ToolbarItems = buttons;
-            
-            sessionData = new SessionDataStore();
+
 
             requestHelper = new RequestHelper();
+            sessionData = new SessionDataStore();
 
             Elements = new ObservableCollection<IExecutableModel>();
         }
 
-        public async void AddGood()
+        public async void AddCategory()
         {
-            await Page.Navigation.PushAsync(new EditGood());
+            await Page.Navigation.PushAsync(new EditCategory());
         }
 
         public async Task Appearing()
         {
 
-            var items = await requestHelper.Get<IEnumerable<Good>>($"http://rstore.kikoriki.space/GoodList/{ sessionData.SessionToken }");
+            var items = await requestHelper.Get<IEnumerable<GoodCategory>>($"http://rstore.kikoriki.space/GoodCategory/{ sessionData.SessionToken }");
 
             Elements.Clear();
             foreach (var item in items)
             {
                 Elements.Add(
-                    new ActionModel<Good>(item)
+                    new ActionModel<GoodCategory>(item)
                     {
-                        Text = item.Title,
-                        Description = item.Price.ToString(),
-                        ExecAction = async f => await Page.Navigation.PushAsync(new EditGood(item))
+                        Text = item.Name,
+                        Description = item.Description,
+                        ExecAction = async f => await Page.Navigation.PushAsync(new EditCategory(item))
                     }
                 );
             }

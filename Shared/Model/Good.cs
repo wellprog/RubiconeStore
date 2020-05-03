@@ -9,7 +9,7 @@ using Shared.Helpers;
 
 namespace Shared.Model
 {
-    public class Good : IValidate
+    public class Good : IValidate, IPK
     {
         [NoCopy]
         public int ID { get; set; }

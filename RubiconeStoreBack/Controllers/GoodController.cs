@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,75 +19,18 @@ namespace RubiconeStoreBack.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class GoodController : ControllerBase
+    public class GoodController : BaseController<GoodController>
     {
-        private readonly ILogger<GoodController> _logger;
-        private readonly DbStore _store;
-        private readonly UserHelper _userHelper;
-
-        public GoodController(ILogger<GoodController> logger, DbStore store, UserHelper userHelper)
-        {
-            this._logger = logger;
-            this._store = store;
-            this._userHelper = userHelper;
-        }
+        public GoodController(ILogger<GoodController> logger, DbStore store, UserHelper userHelper) : base(logger ,userHelper, store)
+        { }
 
         [HttpPost]
-        public ResponceModel<Good> StoreOne(RequestModel<Good> request)
-        {
-            var responce = CheckGoodRequest(request);
-            if (responce != null) return responce;
-
-            _store.Add(request.Content);
-            _store.SaveChanges();
-
-            return new ResponceModel<Good> { content = request.Content };
-        }
+        public ResponceModel<Good> StoreOne(RequestModel<Good> request) => StoreOne<Good>(request);
 
         [HttpPatch]
-        public ResponceModel<Good> PatchOne(RequestModel<Good> request)
-        {
-            var responce = CheckGoodRequest(request);
-            if (responce != null) return responce;
-
-            var good = _store.Goods.Where(f => f.ID == request.Content.ID).FirstOrDefault();
-            if (good == null)
-                return new ResponceModel<Good>().RecordNotFound();
-
-            good.CopyAllFrom(request.Content);
-
-            _store.SaveChanges();
-
-            return new ResponceModel<Good> { content = good };
-        }
+        public ResponceModel<Good> PatchOne(RequestModel<Good> request) => PatchOne<Good>(request);
 
         [HttpDelete]
-        public ResponceModel<Good> DeleteOne(RequestModel<Good> request)
-        {
-            var responce = CheckGoodRequest(request);
-            if (responce != null) return responce;
-
-            var good = _store.Goods.Where(f => f.ID == request.Content.ID).FirstOrDefault();
-            if (good == null)
-                return new ResponceModel<Good>().RecordNotFound();
-
-            _store.Remove(good);
-            _store.SaveChanges();
-
-            return new ResponceModel<Good> { content = request.Content };
-        }
-
-        private ResponceModel<Good> CheckGoodRequest(RequestModel<Good> request)
-        {
-            var responce = _userHelper.IsUserAutorized<Good>(request.AuthKey);
-            if (responce != null) return responce;
-
-
-            if (!request.Content.IsModelRight())
-                return new ResponceModel<Good>().FieldEmptyError();
-
-            return null;
-        }
-
+        public ResponceModel<Good> DeleteOne(RequestModel<Good> request) => DeleteOne<Good>(request);
     }
 }

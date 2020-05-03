@@ -36,10 +36,7 @@ namespace RubiconeStore.MyViewModels
 
         public async Task Appearing()
         {
-            IEnumerable<User> model = await requestHelper.Get<IEnumerable<User>>("http://rstore.kikoriki.space/UserList", new Dictionary<string, object>
-            {
-                { "AuthKey", sessionData.UserAuthModel.UserSession.SessionToken }
-            });
+            IEnumerable<User> model = await requestHelper.Get<IEnumerable<User>>($"http://rstore.kikoriki.space/UserList/{ sessionData.SessionToken }");
 
             foreach (var item in model)
             {
