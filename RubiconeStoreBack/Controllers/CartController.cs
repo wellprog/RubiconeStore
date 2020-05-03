@@ -114,7 +114,7 @@ namespace RubiconeStoreBack.Controllers
                 return new ResponceModel<Sell>().RecordNotFound();
 
             //Удаляем addedSell из UserCart
-            deletedSell.CheckID = null; //! Вероятно, лучше удалить deletedSell вообще из БД, так как Sell лежащие в корзине не влияют на Storages, и удалив их оттуда к ним нельзя вернуться
+            deletedSell.CheckID = 0; //! Вероятно, лучше удалить deletedSell вообще из БД, так как Sell лежащие в корзине не влияют на Storages, и удалив их оттуда к ним нельзя вернуться
             userCart.Sells.Remove(deletedSell);
             //Сохраняем изменения в БД
             _store.Update<Sell>(deletedSell);
@@ -133,7 +133,7 @@ namespace RubiconeStoreBack.Controllers
 
             var userCart = user.Cart;
             if (userCart == null)
-                return new ResponceModel<Sell>().RecordNotFound();
+                return new ResponceModel<int>().RecordNotFound();
 
             int userCartItemsCount = userCart.Sells.Count;
 
