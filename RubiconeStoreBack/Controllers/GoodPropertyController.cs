@@ -29,6 +29,7 @@ namespace RubiconeStoreBack.Controllers
         }
 
         [HttpGet]
+        [Route("[controller]/{AuthKey}")]
         public ResponceModel<IEnumerable<GoodProperty>> GetAll(string AuthKey)
         {
             var responce = _userHelper.IsUserAutorized<IEnumerable<GoodProperty>>(AuthKey);

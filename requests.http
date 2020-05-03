@@ -1,3 +1,5 @@
+@AuthKey = becc5c24-998a-43e8-912f-8480ddcca77a
+
 
 ### Login
 GET http://kikoriki.space:5000/User?email=test&password=test
@@ -27,3 +29,10 @@ Content-Type: application/json
     "Email":"123",
     "Password":"test"
 }
+
+
+
+
+### GoodProperty
+
+GET http://kikoriki.space:5000/GoodProperty/{{AuthKey}}
