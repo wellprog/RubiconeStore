@@ -36,8 +36,7 @@ namespace RubiconeStore.MyViewModels
 
             Elements.Add(new ActionModel<Actions>(Actions.User) { Text = "Пользователи", ExecAction = ExecAction });
             Elements.Add(new ActionModel<Actions>(Actions.Category) { Text = "Категории товаров", ExecAction = ExecAction });
-            Elements.Add(new ActionModel<Actions>(Actions.Good) { Text = "Товары", ExecAction = ExecAction });
-            
+            Elements.Add(new ActionModel<Actions>(Actions.Good) { Text = "Товары", ExecAction = ExecAction });            
         }
 
         private async Task ExecAction(Actions a)

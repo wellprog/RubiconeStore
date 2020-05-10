@@ -52,16 +52,24 @@ namespace RubiconeStore.MyViewModels
             Elements.Clear();
             foreach (var item in items)
             {
-                Elements.Add(
-                    new ActionModel<Good>(item)
-                    {
-                        Text = item.Title,
-                        Description = item.Price.ToString(),
-                        ExecAction = async f => await Page.Navigation.PushAsync(new EditGood(item))
-                    }
-                );
+                var good = new ActionModel<Good>(item)
+                {
+                    Text = item.Title,
+                    Description = item.Price.ToString(),
+                    ExecAction = async f => await Page.Navigation.PushAsync(new EditGood(item))
+                };
+
+                good.AddLeftSwipe("Delete", Color.Red, new Command(async f => await DeleteGood(f as Good)));
+                good.AddRightSwipe("Delete", Color.Red, new Command(async f => await DeleteGood(f as Good)));
+
+                Elements.Add(good);
             }
 
+        }
+
+        public async Task DeleteGood(Good item)
+        {
+            await Page.DisplayAlert("Test", item.Title, "Ok");
         }
     }
 }

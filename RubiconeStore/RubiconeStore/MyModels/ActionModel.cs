@@ -16,6 +16,8 @@ namespace RubiconeStore.MyModels
         bool ShowDescription { get; }
         void Exec();
         ICommand Command { get; }
+        SwipeItems LeftSwipeItems { get; }
+        SwipeItems RightSwipeItems { get; }
     }
 
     public class ActionModel<T> : IExecutableModel
@@ -26,7 +28,8 @@ namespace RubiconeStore.MyModels
         public Func<T, Task> ExecAction { get; set; }
         public T Parametr { get; set; }
         public ICommand Command { get; private set; }
-        //IEnumerable<{Command, color, text}> Actions { get; }
+        public SwipeItems LeftSwipeItems { get; private set; } = new SwipeItems();
+        public SwipeItems RightSwipeItems { get; private set; } = new SwipeItems();
 
         public ActionModel(T parametr)
         {
@@ -37,6 +40,28 @@ namespace RubiconeStore.MyModels
         public async void Exec()
         {
             await ExecAction?.Invoke(Parametr);
+        }
+
+        public void AddLeftSwipe(string title, Color color, ICommand command)
+        {
+            LeftSwipeItems.Add(new SwipeItem()
+            {
+                Command = command,
+                Text = title,
+                BackgroundColor = color,
+                CommandParameter = Parametr
+            });
+        }
+
+        public void AddRightSwipe(string title, Color color, ICommand command)
+        {
+            RightSwipeItems.Add(new SwipeItem()
+            {
+                Command = command,
+                Text = title,
+                BackgroundColor = color,
+                CommandParameter = Parametr
+            });
         }
     }
 }

@@ -19,18 +19,7 @@
         <CollectionView.ItemTemplate>
             <DataTemplate>
 
-                <SwipeView>
-                    <SwipeView.LeftItems>
-                        <SwipeItems>
-                            <SwipeItem Text="Favorite"
-                                   IconImageSource="favorite.png"
-                                   BackgroundColor="LightGreen" />
-                            <SwipeItem Text="Delete"
-                                   IconImageSource="delete.png"
-                                   BackgroundColor="LightPink" />
-                        </SwipeItems>
-                    </SwipeView.LeftItems>
-                    
+                <SwipeView LeftItems="{Binding LeftSwipeItems}" RightItems="{Binding RightSwipeItems}">
                     <StackLayout Padding="10">
                         <Label Text="{Binding Text}" 
                                 d:Text="{Binding .}"
