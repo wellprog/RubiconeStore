@@ -51,16 +51,30 @@ namespace RubiconeStore.MyViewModels
             Elements.Clear();
             foreach (var item in items)
             {
-                Elements.Add(
-                    new ActionModel<GoodCategory>(item)
-                    {
-                        Text = item.Name,
-                        Description = item.Description,
-                        ExecAction = async f => await Page.Navigation.PushAsync(new EditCategory(item))
-                    }
-                );
+                var category = new ActionModel<GoodCategory>(item)
+                {
+                    Text = item.Name,
+                    Description = item.Description,
+                    ExecAction = async f => await Page.Navigation.PushAsync(new EditCategory(item))
+                };
+
+                category.AddLeftSwipe("Delete", Color.Red, new Command(async f => await DeleteCategory(f as GoodCategory)));
+                category.AddRightSwipe("Edit", Color.Yellow, new Command(async f => await EditCategory(f as GoodCategory)));
+
+                Elements.Add(category);
             }
 
+        }
+
+        public async Task DeleteCategory(GoodCategory category)
+        {
+            await requestHelper.Delete<GoodCategory>($"http://rstore.kikoriki.space/GoodCategory/{ sessionData.SessionToken }", new Dictionary<string, object> { { "request", category } });
+            await Page.DisplayAlert("Delete Category success!", category.Name, "Ok");
+        }
+
+        public async Task EditCategory(GoodCategory category)
+        {
+            await Page.Navigation.PushAsync(new EditCategory(category));
         }
     }
 }
