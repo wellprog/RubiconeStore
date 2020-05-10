@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Shared.Helpers;
+using Microsoft.AspNetCore.Razor.Language.Extensions;
 
 namespace RubiconeStoreBack.Controllers
 {
@@ -64,19 +65,19 @@ namespace RubiconeStoreBack.Controllers
             return new ResponceModel<Req> { content = element };
         }
 
-        public ResponceModel<Req> DeleteOne<Req>(RequestModel<Req> request) where Req : class, IValidate, IPK
+        public ResponceModel<Req> DeleteOne<Req>(string authKey, int id) where Req : class, IValidate, IPK
         {
-            var responce = CheckRequest(request);
+            var responce = _userHelper.IsUserAutorized<Req>(authKey);
             if (responce != null) return responce;
 
-            var element = _store.Find<Req>(request.Content.ID);
+            var element = _store.Find<Req>(id);
             if (element == null)
                 return new ResponceModel<Req>().RecordNotFound();
 
             _store.Remove(element);
             _store.SaveChanges();
 
-            return new ResponceModel<Req> { content = request.Content };
+            return new ResponceModel<Req> { content = element };
         }
 
 

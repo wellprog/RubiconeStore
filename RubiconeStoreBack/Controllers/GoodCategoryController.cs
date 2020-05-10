@@ -38,9 +38,9 @@ namespace RubiconeStoreBack.Controllers
         [Route("[controller]")]
         public ResponceModel<GoodCategory> PatchOne(RequestModel<GoodCategory> request) => PatchOne<GoodCategory>(request);
 
+        [Route("[controller]/{AuthKey}/{ElementId}")]
         [HttpDelete]
-        [Route("[controller]")]
-        public ResponceModel<GoodCategory> DeleteOne(RequestModel<GoodCategory> request) => DeleteOne<GoodCategory>(request);
+        public ResponceModel<GoodCategory> DeleteOne(string AuthKey, int ElementId) => DeleteOne<GoodCategory>(AuthKey, ElementId);
 
 
     }

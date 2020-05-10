@@ -38,8 +38,8 @@ namespace RubiconeStoreBack.Controllers
         [Route("[controller]")]
         public ResponceModel<GoodProperty> PatchOne(RequestModel<GoodProperty> request) => PatchOne<GoodProperty>(request);
 
+        [Route("[controller]/{AuthKey}/{ElementId}")]
         [HttpDelete]
-        [Route("[controller]")]
-        public ResponceModel<GoodProperty> DeleteOne(RequestModel<GoodProperty> request) => DeleteOne<GoodProperty>(request);
+        public ResponceModel<GoodProperty> DeleteOne(string AuthKey, int ElementId) => DeleteOne<GoodProperty>(AuthKey, ElementId);
     }
 }

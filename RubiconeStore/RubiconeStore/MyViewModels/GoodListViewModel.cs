@@ -70,7 +70,7 @@ namespace RubiconeStore.MyViewModels
         public async Task DeleteGood(Good item)
         {
             await Page.DisplayAlert("Delete Good success!", item.Title, "Ok");
-            await requestHelper.Delete<Good>($"http://rstore.kikoriki.space/Good/{ sessionData.SessionToken }", new Dictionary<string, object> { { "request", item } });
+            await requestHelper.Delete<Good>($"http://rstore.kikoriki.space/Good/{ sessionData.SessionToken }/{ item.ID }");
         }
 
         public async Task EditGood(Good item)
