@@ -60,6 +60,7 @@ namespace RubiconeStore.MyViewModels
 
                 category.AddLeftSwipe("Delete", Color.Red, new Command(async f => await DeleteCategory(f as GoodCategory)));
                 category.AddRightSwipe("Edit", Color.Yellow, new Command(async f => await EditCategory(f as GoodCategory)));
+                category.AddRightSwipe("Params", Color.Gray, new Command(async f => await ShowParams(f as GoodCategory)));
 
                 Elements.Add(category);
             }
@@ -68,13 +69,18 @@ namespace RubiconeStore.MyViewModels
 
         public async Task DeleteCategory(GoodCategory category)
         {
-            await requestHelper.Delete<GoodCategory>($"http://rstore.kikoriki.space/GoodCategory/{ sessionData.SessionToken }", new Dictionary<string, object> { { "request", category } });
+            await requestHelper.Delete<GoodCategory>($"http://rstore.kikoriki.space/GoodCategory/{ sessionData.SessionToken }/{ category.ID }");
             await Page.DisplayAlert("Delete Category success!", category.Name, "Ok");
         }
 
         public async Task EditCategory(GoodCategory category)
         {
             await Page.Navigation.PushAsync(new EditCategory(category));
+        }
+
+        public async Task ShowParams(GoodCategory category)
+        {
+            await Page.Navigation.PushAsync(new SimpleTablePage() { ViewModel = new GoodPropertyListViewModel(category) });
         }
     }
 }

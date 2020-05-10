@@ -41,32 +41,23 @@ namespace RubiconeStore.MyViewModels
 
         public async void SaveProperty()
         {
-            if (category.ID == 0)
-                await requestHelper.Post<Good, RequestModel<GoodCategory>>("http://rstore.kikoriki.space/GoodCategory", new RequestModel<GoodCategory>()
+            if (property.ID == 0)
+                await requestHelper.Post<GoodProperty, RequestModel<GoodProperty>>("http://rstore.kikoriki.space/GoodProperty", new RequestModel<GoodProperty>()
                 {
-                    Content = category,
+                    Content = property,
                     AuthKey = sessionData.UserAuthModel.UserSession.SessionToken
                 });
             else
-                await requestHelper.Patch<Good, RequestModel<GoodCategory>>("http://rstore.kikoriki.space/GoodCategory", new RequestModel<GoodCategory>()
+                await requestHelper.Patch<GoodProperty, RequestModel<GoodProperty>>("http://rstore.kikoriki.space/GoodProperty", new RequestModel<GoodProperty>()
                 {
-                    Content = category,
+                    Content = property,
                     AuthKey = sessionData.UserAuthModel.UserSession.SessionToken
                 });
 
             await page.Navigation.PopAsync();
         }
 
-        public async Task Appearing()
-        {
-            //var items = await requestHelper.Get<IEnumerable<GoodCategory>>($"http://rstore.kikoriki.space/GoodCategory/{ sessionData.SessionToken }");
-
-            //Categories.Clear();
-            //foreach (var item in items)
-            //    Categories.Add(item);
-
-            //GoodCategoryIndex = Categories.IndexOf(Categories.Where(f => f.ID == good.GoodCategoryID).FirstOrDefault());
-        }
+        public async Task Appearing() { }
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {

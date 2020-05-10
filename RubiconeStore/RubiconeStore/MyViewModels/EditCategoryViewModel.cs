@@ -60,13 +60,13 @@ namespace RubiconeStore.MyViewModels
         public async void SaveCategory()
         {
             if (category.ID == 0)
-                await requestHelper.Post<Good, RequestModel<GoodCategory>>("http://rstore.kikoriki.space/GoodCategory", new RequestModel<GoodCategory>()
+                await requestHelper.Post<GoodCategory, RequestModel<GoodCategory>>("http://rstore.kikoriki.space/GoodCategory", new RequestModel<GoodCategory>()
                 {
                     Content = category,
                     AuthKey = sessionData.UserAuthModel.UserSession.SessionToken
                 });
             else
-                await requestHelper.Patch<Good, RequestModel<GoodCategory>>("http://rstore.kikoriki.space/GoodCategory", new RequestModel<GoodCategory>()
+                await requestHelper.Patch<GoodCategory, RequestModel<GoodCategory>>("http://rstore.kikoriki.space/GoodCategory", new RequestModel<GoodCategory>()
                 {
                     Content = category,
                     AuthKey = sessionData.UserAuthModel.UserSession.SessionToken

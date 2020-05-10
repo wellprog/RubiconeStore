@@ -18,6 +18,7 @@ namespace RubiconeStore.MyModels
         ICommand Command { get; }
         SwipeItems LeftSwipeItems { get; }
         SwipeItems RightSwipeItems { get; }
+        object getModelItem();
     }
 
     public class ActionModel<T> : IExecutableModel
@@ -36,6 +37,8 @@ namespace RubiconeStore.MyModels
             Parametr = parametr;
             Command = new Command(Exec, () => ExecAction != null);
         }
+
+        public object getModelItem() => Parametr;
 
         public async void Exec()
         {

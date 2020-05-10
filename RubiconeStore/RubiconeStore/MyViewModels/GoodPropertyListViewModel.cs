@@ -15,7 +15,7 @@ using Xamarin.Forms;
 
 namespace RubiconeStore.MyViewModels
 {
-    public class GoodPropertyListViewController : BaseViewModel, ITableViewModel
+    public class GoodPropertyListViewModel : BaseViewModel, ITableViewModel
     {
         public string PageName { get; private set; } = "Список атрибутов для ";
 
@@ -27,7 +27,7 @@ namespace RubiconeStore.MyViewModels
         private readonly RequestHelper requestHelper;
         private readonly GoodCategory goodCategory;
 
-        public GoodPropertyListViewController(GoodCategory goodCategory)
+        public GoodPropertyListViewModel(GoodCategory goodCategory)
         {
             this.goodCategory = goodCategory;
 
@@ -59,24 +59,28 @@ namespace RubiconeStore.MyViewModels
                 {
                     Text = item.Name,
                     Description = item.Description,
-                    ExecAction = async f => await Page.Navigation.PushAsync(new EditGoodProperty(goodCategory, item))
+                    ExecAction = async f => await EditGoodProperty(item)
                 };
 
-                good.AddLeftSwipe("Delete", Color.Red, new Command(async f => await DeleteGoodProperty(f as Good)));
+                good.AddLeftSwipe("Delete", Color.Red, new Command(async f => await DeleteGoodProperty(f as GoodProperty)));
+                good.AddRightSwipe("Edit", Color.Yellow, new Command(async f => await EditGoodProperty(f as GoodProperty)));
 
                 Elements.Add(good);
             }
 
         }
 
-        public async Task DeleteGoodProperty(Good item)
+        public async Task DeleteGoodProperty(GoodProperty item)
         {
-            await Page.DisplayAlert("Test", item.Title, "Ok");
+            await requestHelper.Delete<GoodProperty>($"http://rstore.kikoriki.space/GoodProperty/{ sessionData.SessionToken }/{ item.ID }");
+            foreach (var i in Elements)
+                if (item == i.getModelItem()) { Elements.Remove(i); break; }
+            await Page.DisplayAlert("Delete Property success!", item.Name, "Ok");
         }
 
-        public async Task EditGoodProperty(Good item)
+        public async Task EditGoodProperty(GoodProperty item)
         {
-            await Page.DisplayAlert("Test", item.Title, "Ok");
+            await Page.Navigation.PushAsync(new EditGoodProperty(goodCategory, item));
         }
 
     }
