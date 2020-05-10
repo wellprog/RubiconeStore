@@ -1,6 +1,6 @@
-@AuthKey = c4a6de5b-1be8-48be-b74f-e89fe80d48e0
-//@BaseUrl = http://localhost:60521
-@BaseUrl = http://kikoriki.space:5000
+@AuthKey = d7255bad-0acc-4641-ad46-268115dc4412
+@BaseUrl = http://localhost:60521
+#@BaseUrl = http://kikoriki.space:5000
 
 ### Login
 GET http://kikoriki.space:5000/User?email=test&password=test
@@ -44,3 +44,10 @@ GET {{BaseUrl}}/UserList/{{AuthKey}}
 
 ### GoodCategory
 GET {{BaseUrl}}/GoodCategory/{{AuthKey}}
+
+
+### All goods
+GET {{BaseUrl}}/Good/{{AuthKey}}
+
+### DELETE GOOD
+DELETE {{BaseUrl}}/Good/{{AuthKey}}/1

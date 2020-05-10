@@ -18,15 +18,16 @@ using Shared.Model;
 namespace RubiconeStoreBack.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class GoodController : BaseController<GoodController>
     {
         public GoodController(ILogger<GoodController> logger, DbStore store, UserHelper userHelper) : base(logger ,userHelper, store)
         { }
 
+        [Route("[controller]")]
         [HttpPost]
         public ResponceModel<Good> StoreOne(RequestModel<Good> request) => StoreOne<Good>(request);
 
+        [Route("[controller]")]
         [HttpPatch]
         public ResponceModel<Good> PatchOne(RequestModel<Good> request) => PatchOne<Good>(request);
 
