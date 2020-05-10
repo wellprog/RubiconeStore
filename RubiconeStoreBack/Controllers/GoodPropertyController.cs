@@ -14,18 +14,10 @@ using System.Threading.Tasks;
 namespace RubiconeStoreBack.Controllers
 {
     [ApiController]
-    public class GoodPropertyController
+    public class GoodPropertyController : BaseController<GoodPropertyController>
     {
-        private readonly ILogger<UserListController> _logger;
-        private readonly DbStore _store;
-        private readonly UserHelper _userHelper;
-
-        public GoodPropertyController(ILogger<UserListController> logger, DbStore store, UserHelper userHelper)
-        {
-            this._logger = logger;
-            this._store = store;
-            this._userHelper = userHelper;
-        }
+        public GoodPropertyController(ILogger<GoodPropertyController> logger, DbStore store, UserHelper userHelper)
+            : base(logger, userHelper, store) { }
 
         [HttpGet]
         [Route("[controller]/{AuthKey}")]
@@ -37,5 +29,17 @@ namespace RubiconeStoreBack.Controllers
             var resp = _store.GoodProperties; //!
             return new ResponceModel<IEnumerable<GoodProperty>> { content = resp };
         }
+
+        [HttpPost]
+        [Route("[controller]")]
+        public ResponceModel<GoodProperty> StoreOne(RequestModel<GoodProperty> request) => StoreOne<GoodProperty>(request);
+
+        [HttpPatch]
+        [Route("[controller]")]
+        public ResponceModel<GoodProperty> PatchOne(RequestModel<GoodProperty> request) => PatchOne<GoodProperty>(request);
+
+        [HttpDelete]
+        [Route("[controller]")]
+        public ResponceModel<GoodProperty> DeleteOne(RequestModel<GoodProperty> request) => DeleteOne<GoodProperty>(request);
     }
 }
