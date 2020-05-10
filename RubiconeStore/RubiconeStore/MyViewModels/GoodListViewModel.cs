@@ -60,7 +60,7 @@ namespace RubiconeStore.MyViewModels
                 };
 
                 good.AddLeftSwipe("Delete", Color.Red, new Command(async f => await DeleteGood(f as Good)));
-                good.AddRightSwipe("Delete", Color.Red, new Command(async f => await DeleteGood(f as Good)));
+                good.AddRightSwipe("Edit", Color.Yellow, new Command(async f => await EditGood(f as Good)));
 
                 Elements.Add(good);
             }
@@ -69,7 +69,13 @@ namespace RubiconeStore.MyViewModels
 
         public async Task DeleteGood(Good item)
         {
-            await Page.DisplayAlert("Test", item.Title, "Ok");
+            await Page.DisplayAlert("Delete Good success!", item.Title, "Ok");
+            await requestHelper.Delete<Good>($"http://rstore.kikoriki.space/Good/{ sessionData.SessionToken }", new Dictionary<string, object> { { "request", item } });
+        }
+
+        public async Task EditGood(Good item)
+        {
+            await Page.Navigation.PushAsync(new EditGood(item));
         }
     }
 }
