@@ -46,7 +46,6 @@ namespace RubiconeStore.MyViewModels
 
         public async Task Appearing()
         {
-
             var items = await requestHelper.Get<IEnumerable<Good>>($"http://rstore.kikoriki.space/GoodList/{ sessionData.SessionToken }");
 
             Elements.Clear();
@@ -61,6 +60,7 @@ namespace RubiconeStore.MyViewModels
 
                 good.AddLeftSwipe("Delete", Color.Red, new Command(async f => await DeleteGood(f as Good)));
                 good.AddRightSwipe("Edit", Color.Yellow, new Command(async f => await EditGood(f as Good)));
+                good.AddRightSwipe("Params", Color.Gray, new Command(async f => await ShowParams(f as Good)));
 
                 Elements.Add(good);
             }
@@ -70,12 +70,20 @@ namespace RubiconeStore.MyViewModels
         public async Task DeleteGood(Good item)
         {
             await requestHelper.Delete<Good>($"http://rstore.kikoriki.space/Good/{ sessionData.SessionToken }/{ item.ID }");
+            foreach (var i in Elements)
+                if (item == i.getModelItem()) { Elements.Remove(i); break; }
             await Page.DisplayAlert("Delete Good success!", item.Title, "Ok");
         }
 
         public async Task EditGood(Good item)
         {
             await Page.Navigation.PushAsync(new EditGood(item));
+        }
+
+        public async Task ShowParams(Good item)
+        {
+            GoodPropertiesModel itemGoodProperties = await requestHelper.Get<GoodPropertiesModel>($"http://rstore.kikoriki.space/GoodsProperties/{ sessionData.SessionToken }/{ item.ID }");
+            await Page.Navigation.PushAsync(new SimpleTablePage() { ViewModel = new GoodPropertiesListViewModel(itemGoodProperties) });
         }
     }
 }

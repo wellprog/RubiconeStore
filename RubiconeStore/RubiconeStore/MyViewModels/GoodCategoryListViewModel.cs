@@ -67,20 +67,22 @@ namespace RubiconeStore.MyViewModels
 
         }
 
-        public async Task DeleteCategory(GoodCategory category)
+        public async Task DeleteCategory(GoodCategory item)
         {
-            await requestHelper.Delete<GoodCategory>($"http://rstore.kikoriki.space/GoodCategory/{ sessionData.SessionToken }/{ category.ID }");
-            await Page.DisplayAlert("Delete Category success!", category.Name, "Ok");
+            await requestHelper.Delete<GoodCategory>($"http://rstore.kikoriki.space/GoodCategory/{ sessionData.SessionToken }/{ item.ID }");
+            foreach (var i in Elements)
+                if (item == i.getModelItem()) { Elements.Remove(i); break; }
+            await Page.DisplayAlert("Delete Category success!", item.Name, "Ok");
         }
 
-        public async Task EditCategory(GoodCategory category)
+        public async Task EditCategory(GoodCategory item)
         {
-            await Page.Navigation.PushAsync(new EditCategory(category));
+            await Page.Navigation.PushAsync(new EditCategory(item));
         }
 
-        public async Task ShowParams(GoodCategory category)
+        public async Task ShowParams(GoodCategory item)
         {
-            await Page.Navigation.PushAsync(new SimpleTablePage() { ViewModel = new GoodPropertyListViewModel(category) });
+            await Page.Navigation.PushAsync(new SimpleTablePage() { ViewModel = new GoodPropertyListViewModel(item) });
         }
     }
 }
