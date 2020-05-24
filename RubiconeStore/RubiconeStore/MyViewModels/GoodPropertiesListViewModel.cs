@@ -52,16 +52,15 @@ namespace RubiconeStore.MyViewModels
             var items = viewedGoodProperties;
 
             Elements.Clear();
-            for(int i = 0; i < items.GoodProperties.Count<GoodProperty>(); i++)
+            foreach (var property in items.GoodProperties)
             {
-                var itemProperty = items.GoodProperties.ElementAt(i);
-                var itemPropertyValue = items.GoodPropertyValues.ElementAt(i);
+                var itemPropertyValue = items.GoodPropertyValues.Where(f => f.GoodPropertyID == property.ID).FirstOrDefault();
 
-                var good = new ActionModel<GoodProperty>(itemProperty)
+                var good = new ActionModel<GoodProperty>(property)
                 {
-                    Text = itemProperty.Name,
-                    Description = itemPropertyValue.Value,
-                    ExecAction = async f => await EditGoodPropertyValue(itemProperty)
+                    Text = property.Name,
+                    Description = itemPropertyValue?.Value,
+                    ExecAction = async f => await EditGoodPropertyValue(property)
                 };
 
                 good.AddLeftSwipe("Delete", Color.Red, new Command(async f => await DeleteGoodPropertyValue(f as GoodProperty)));
