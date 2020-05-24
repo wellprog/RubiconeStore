@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RubiconeStoreBack.DataAccess;
 using RubiconeStoreBack.Error;
@@ -41,13 +42,40 @@ namespace RubiconeStoreBack.Controllers
             };
         }
 
-        public ResponceModel<GoodPropertyValue> SetPropertyForGood(RequestModel<GoodPropertyValue> request)
+        [Route("[controller]/{AuthKey}")]
+        [HttpPost]
+        public ResponceModel<GoodPropertyValue> SetPropertyForGood(string AuthKey, RequestModel<GoodPropertyValue> request)
         {
-            var good = _store.Goods.Where(f => f.ID == request.Content.GoodID).FirstOrDefault();
+            var good = _store.Goods.Include(f => f.GoodCategory).Where(f => f.ID == request.Content.GoodID).FirstOrDefault();
             if (good == null)
                 return new ResponceModel<GoodPropertyValue>().RecordNotFound();
 
+            if (good.GoodCategory == null)
+                return new ResponceModel<GoodPropertyValue>().CategoryNotFound();
 
+            var property = _store.GoodProperties.Where(f => f.ID == request.Content.GoodPropertyID).FirstOrDefault();
+            if (property == null)
+                return new ResponceModel<GoodPropertyValue>().RecordNotFound();
+
+            if (property.GoodCategoryID != good.GoodCategory.ID)
+                return new ResponceModel<GoodPropertyValue>().WrongPropertyCategory();
+
+            if (request.Content.ID == 0)
+            {
+                _store.Add(request.Content);
+                _store.SaveChanges();
+
+                return new ResponceModel<GoodPropertyValue>() { content = request.Content };
+            }
+            else
+            {
+                var element = _store.GoodPropertyValues.Where(f => f.ID == request.Content.ID).FirstOrDefault();
+                element.Value = request.Content.Value;
+
+                _store.SaveChanges();
+
+                return new ResponceModel<GoodPropertyValue>() { content = element };
+            }
         }
     }
 }
