@@ -1,4 +1,5 @@
-﻿using RubiconeStore.DataStores;
+﻿using RubiconeStore.Client.Views;
+using RubiconeStore.DataStores;
 using RubiconeStore.Helpers;
 using RubiconeStore.MyModels;
 using RubiconeStore.MyViewInterfaces;
@@ -40,7 +41,7 @@ namespace RubiconeStore.Client.ViewModels
                 {
                     Text = item.Title,
                     Description = item.Price.ToString(),
-                    ExecAction = async f => { /*await Page.Navigation.PushAsync(new EditCategory(item))*/ await Page.DisplayAlert("asdf", "Sdfasdf", "asdfasdf"); }
+                    ExecAction = async f => { item.GoodCategory = category; await Page.Navigation.PushAsync(new GoodDetails(item)); }
                 };
 
                 Elements.Add(good);

@@ -32,7 +32,7 @@ namespace RubiconeStoreBack.Controllers
             var responce = _userHelper.IsUserAutorized<IEnumerable<Good>>(AuthKey);
             if (responce != null) return responce;
 
-            var resp = _store.Goods.Include(f => f.GoodCategory).Include(f => f.GoodPropertyValues).ThenInclude(f => f.GoodProperty);
+            var resp = _store.Goods;
             return new ResponceModel<IEnumerable<Good>> { content = resp };
         }
 
@@ -43,7 +43,7 @@ namespace RubiconeStoreBack.Controllers
             var responce = _userHelper.IsUserAutorized<IEnumerable<Good>>(AuthKey);
             if (responce != null) return responce;
 
-            var resp = _store.Goods.Where(f => f.GoodCategoryID == CategoryId).Include(f => f.GoodCategory).Include(f => f.GoodPropertyValues).ThenInclude(f => f.GoodProperty);
+            var resp = _store.Goods.Where(f => f.GoodCategoryID == CategoryId);
             return new ResponceModel<IEnumerable<Good>> { content = resp };
         }
     }

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="RubiconeStore.Client.Views.GoodDetails">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label d:Text="Good Title"
+                   Text="{Binding Title}"
+                   HorizontalOptions="Center"
+                   Margin="0,20,0,0"
+                   FontSize="Title"/>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Text" WidthRequest="100" Margin="20, 0,0,0" />
+                <Label d:Text="Text Text" Text="{Binding Text}" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Price" WidthRequest="100" Margin="20, 0,0,0" />
+                <Label d:Text="value" Text="{Binding Price}" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Category" WidthRequest="100" Margin="20, 0,0,0" />
+                <Label d:Text="value" Text="{Binding GoodCategory.Name}" />
+            </StackLayout>
+
+            <Label Text="Good Attributes" 
+                   HorizontalOptions="Center"  
+                   Margin="0,20,20,0"
+                   FontSize="Subtitle"/>
+            
+            <StackLayout x:Name="Params">
+                
+            </StackLayout>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
