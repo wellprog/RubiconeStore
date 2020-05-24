@@ -28,8 +28,8 @@ namespace RubiconeStoreBack.Controllers
             if (good == null)
                 return new ResponceModel<GoodPropertiesModel>().RecordNotFound();
 
-            var properties = _store.GoodProperties.Where(f => f.GoodCategoryID == good.GoodCategoryID);
-            var values = _store.GoodPropertyValues.Where(f => f.GoodID == good.ID);
+            var properties = _store.GoodProperties.Where(f => f.GoodCategoryID == good.GoodCategoryID).ToArray();
+            var values = _store.GoodPropertyValues.Where(f => f.GoodID == good.ID).ToArray();
 
             return new ResponceModel<GoodPropertiesModel>()
             {

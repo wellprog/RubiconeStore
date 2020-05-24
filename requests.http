@@ -1,4 +1,4 @@
-@AuthKey = d7255bad-0acc-4641-ad46-268115dc4412
+@AuthKey = 97095687-6765-4948-a39d-5094990cde31
 @BaseUrl = http://localhost:60521
 #@BaseUrl = http://kikoriki.space:5000
 
@@ -51,3 +51,7 @@ GET {{BaseUrl}}/Good/{{AuthKey}}
 
 ### DELETE GOOD
 DELETE {{BaseUrl}}/Good/{{AuthKey}}/1
+
+
+### Get properties
+GET {{BaseUrl}}/GoodsProperties/{{AuthKey}}/3
