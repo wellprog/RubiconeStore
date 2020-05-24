@@ -35,5 +35,16 @@ namespace RubiconeStoreBack.Controllers
             var resp = _store.Goods.Include(f => f.GoodCategory).Include(f => f.GoodPropertyValues).ThenInclude(f => f.GoodProperty);
             return new ResponceModel<IEnumerable<Good>> { content = resp };
         }
+
+        [HttpGet]
+        [Route("[controller]/{AuthKey}/{CategoryId}")]
+        public ResponceModel<IEnumerable<Good>> GetAllByCategory(string AuthKey, int CategoryId)
+        {
+            var responce = _userHelper.IsUserAutorized<IEnumerable<Good>>(AuthKey);
+            if (responce != null) return responce;
+
+            var resp = _store.Goods.Where(f => f.GoodCategoryID == CategoryId).Include(f => f.GoodCategory).Include(f => f.GoodPropertyValues).ThenInclude(f => f.GoodProperty);
+            return new ResponceModel<IEnumerable<Good>> { content = resp };
+        }
     }
 }

@@ -23,6 +23,12 @@ namespace RubiconeStore.MyViews
             model = new LoginViewModel(this);
             BindingContext = model;
             _sessionDataStore = new SessionDataStore();
+            model.NextAction = showAdmin;
+        }
+
+        public LoginPage(Action Next) : this()
+        {
+            model.NextAction = Next;
         }
 
         protected override async void OnAppearing()
@@ -31,6 +37,14 @@ namespace RubiconeStore.MyViews
             {
                 model.ShowNext();
             }
+        }
+
+        protected async void showAdmin()
+        {
+            await this.Navigation.PushAsync(new SimpleTablePage
+            {
+                ViewModel = new AdminViewModel()
+            });
         }
     }
 }

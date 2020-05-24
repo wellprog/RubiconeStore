@@ -16,6 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Client\Views\ClientTabs.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Client\Views\UserDetails.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="MyViews\EditCategory.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

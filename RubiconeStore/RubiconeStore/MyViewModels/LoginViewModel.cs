@@ -23,6 +23,7 @@ namespace RubiconeStore.MyViewModels
         private readonly RequestHelper requestHelper;
         private readonly SessionDataStore _sessionDataStore;
         private readonly Page page;
+        public Action NextAction { get; set; }
 
         private string login = "";
         public string Login { 
@@ -86,12 +87,9 @@ namespace RubiconeStore.MyViewModels
             ShowNext();
         }
 
-        public async void ShowNext()
+        public void ShowNext()
         {
-            await page.Navigation.PushAsync(new SimpleTablePage
-            {
-                ViewModel = new AdminViewModel()
-            });
+            NextAction?.Invoke();
         }
     }
 }

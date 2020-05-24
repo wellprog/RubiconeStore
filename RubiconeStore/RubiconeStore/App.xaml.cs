@@ -4,6 +4,7 @@ using Xamarin.Forms.Xaml;
 using RubiconeStore.Services;
 using RubiconeStore.Views;
 using RubiconeStore.MyViews;
+using RubiconeStore.Client.Views;
 
 namespace RubiconeStore
 {
@@ -19,6 +20,7 @@ namespace RubiconeStore
 
             MainPage = new NavigationPage(new LoginPage());
             //MainPage = new NavigationPage(new EditGood());
+            MainPage = new ClientTabs();
         }
 
         protected override void OnStart()
