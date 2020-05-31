@@ -27,15 +27,40 @@ namespace RubiconeStoreBack.Controllers
 
         [Route("[controller]/{AuthKey}")]
         [HttpGet]
-        public ResponceModel<Check> GetCart(string AuthKey)
+        public ResponceModel<CartModel> GetCart(string AuthKey)
         {
             //Проверяем запрос
-            var responce = _userHelper.IsUserAutorized<Check>(AuthKey);
+            var responce = CheckRequest<CartModel>(AuthKey);
             if (responce != null)
                 return responce;
 
             //Ищем или создаем корзину
-            var cart = _store.Checks.Where(f => f.UserID == _user.ID && !f.IsDone).FirstOrDefault();
+            Check cart = GetCartInner();
+
+            CartModel model = new CartModel();
+            model.Check = cart;
+
+            foreach (var item in cart.Sells)
+                model.CartItems.Add(new CartItemModel()
+                {
+                    Count = item.Count,
+                    Good = item.Storage.Good
+                });
+
+
+            return new ResponceModel<CartModel>()
+            {
+                content = model
+            };
+        }
+
+        private Check GetCartInner()
+        {
+            var cart = _store.Checks.Where(f => f.UserID == _user.ID && !f.IsDone)
+                                    .Include(f => f.Sells)
+                                    .ThenInclude(f => f.Storage)
+                                    .ThenInclude(f => f.Good).FirstOrDefault();
+
             if (cart == null)
             {
                 cart = new Check()
@@ -55,7 +80,7 @@ namespace RubiconeStoreBack.Controllers
         //Положить товар в корзину
         [Route("[controller]")]
         [HttpPost]
-        public ResponceModel<AddToCartModel> AddToCart(RequestModel<AddToCartModel> request)
+        public ResponceModel<CartItemModel> AddToCart(RequestModel<CartItemModel> request)
         {
             //Проверяем запрос
             var responce = CheckRequest(request);
@@ -65,17 +90,17 @@ namespace RubiconeStoreBack.Controllers
             //Находим товар
             var good = _store.Goods.Where(f => f.ID == request.Content.Good.ID).FirstOrDefault();
             if (good == null)
-                return new ResponceModel<AddToCartModel>().RecordNotFound();
+                return new ResponceModel<CartItemModel>().RecordNotFound();
 
             //Проверяем количество
             var allGoods = _store.Storages.Where(f => f.GoodID == request.Content.Good.ID).Sum(f => f.Count);
             var selledGoods = _store.Sells.Where(f => f.Storage.GoodID == request.Content.Good.ID).Sum(f => f.Count);
 
             if (allGoods - selledGoods < request.Content.Count)
-                return new ResponceModel<AddToCartModel>().NotEnoughGoods();
+                return new ResponceModel<CartItemModel>().NotEnoughGoods();
 
             //Ищем или создаем корзину
-            var cart = GetCart(AuthKey); //(Уже проверяли пользователя на корректность!)
+            var cart = GetCartInner(); //(Уже проверяли пользователя на корректность!)
 
             //Добавляем товар
             var storage = _store.Storages.Where(f => f.GoodID == request.Content.Good.ID).OrderByDescending(f => f.ID).First();
@@ -88,7 +113,7 @@ namespace RubiconeStoreBack.Controllers
             _store.SaveChanges();
 
 
-            return new ResponceModel<AddToCartModel>();
+            return new ResponceModel<CartItemModel>();
         }
 
 
@@ -97,31 +122,31 @@ namespace RubiconeStoreBack.Controllers
         public ResponceModel<bool> DeleteFromCart(string AuthKey, int ElementId)
         {
             //Проверяем запрос
-            var responce = _userHelper.IsUserAutorized<bool>(AuthKey);
+            var responce = CheckRequest<bool>(AuthKey);
             if (responce != null)
                 return responce;
 
-            //Ищем или создаем корзину
-            var cartResponce = GetCart(AuthKey); //(Уже проверяли пользователя на корректность!)
-            var cart = cartResponce.content;
+            var cart = _store.Checks.Where(f => f.UserID == _user.ID && !f.IsDone)
+                        .Include(f => f.Sells)
+                        .ThenInclude(f => f.Storage)
+                        .FirstOrDefault();
 
-            //Ищем элемент в ней
-            var itemToDel = cart.Include(f => f.Sells).ThenInclude(f => f.Storage).FirstOrDefault();
-            if(itemToDel == null)
-                return new ResponceModel<bool>();
+            if (cart == null)
+                return new ResponceModel<bool>().NoUserCart();
 
-            //Удаляем товар
-            var storage = _store.Storages.Where(f => f.GoodID == request.Content.Good.ID).OrderByDescending(f => f.ID).First();
-            cart.Sells.Remove(itemToDel);
+            var itemToDel = cart.Sells.Where(f => f.Storage.GoodID == ElementId).FirstOrDefault();
+            if (itemToDel != null)
+            {
+                cart.Sells.Remove(itemToDel);
+                _store.SaveChanges();
+            }
 
-            _store.SaveChanges();
-            
             return new ResponceModel<bool>();
         }
 
         [Route("[controller]")]
         [HttpPatch]
-        public ResponceModel<AddToCartModel> UpdateCart(RequestModel<AddToCartModel> request)
+        public ResponceModel<CartItemModel> UpdateCart(RequestModel<CartItemModel> request)
         {
             //...
         }

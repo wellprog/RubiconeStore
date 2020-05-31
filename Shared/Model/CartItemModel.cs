@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Shared.Model
 {
-    public class AddToCartModel : IValidate
+    public class CartItemModel : IValidate
     {
         public Good Good { get; set; }
         public int Count { get; set; }
