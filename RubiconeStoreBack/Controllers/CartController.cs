@@ -13,20 +13,21 @@ using RubiconeStoreBack.Helpers;
 using Shared.Model;
 using Shared.Helpers;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.AspNetCore.Builder;
 
 namespace RubiconeStoreBack.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     //Класс для контролирования корзины пользователя
     public class CartController : BaseController<CartController>
     {
         public CartController(ILogger<CartController> logger, DbStore store, UserHelper userHelper)
-            : base (logger, userHelper, store) { }
+            : base(logger, userHelper, store) { }
 
 
         //Положить товар в корзину
-        [HttpPut]
+        [Route("[controller]")]
+        [HttpPost]
         public ResponceModel<AddToCartModel> AddToCart(RequestModel<AddToCartModel> request)
         {
             //Проверяем запрос
@@ -73,8 +74,36 @@ namespace RubiconeStoreBack.Controllers
 
             return new ResponceModel<AddToCartModel>();
         }
-        
 
+
+        [Route("[controller]/{AuthKey}/{ElementId}")]
+        [HttpDelete]
+        public ResponceModel<bool> DeleteFromCart(string AuthKey, int ElementId)
+        {
+        }
+
+        [Route("[controller]")]
+        [HttpPatch]
+        public ResponceModel<AddToCartModel> UpdateCart(RequestModel<AddToCartModel> request)
+        {
+        }
+
+        //TODO: Доделать модель ответа вместо int
+        [Route("[controller]/{AuthKey}")]
+        [HttpGet]
+        public ResponceModel<int> GetCart(string AuthKey)
+        {
+
+        }
+
+        //TODO: Доделать модель ответа вместо int
+        //TODO: Доделать модель запроса вместо int
+        [Route("[controller]/finish")]
+        [HttpPost]
+        public ResponceModel<int> FinishCart(RequestModel<int> request)
+        {
+
+        }
 
 
         //[HttpGet]
