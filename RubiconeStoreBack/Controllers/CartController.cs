@@ -23,7 +23,34 @@ namespace RubiconeStoreBack.Controllers
     {
         public CartController(ILogger<CartController> logger, DbStore store, UserHelper userHelper)
             : base(logger, userHelper, store) { }
+        
 
+        [Route("[controller]/{AuthKey}")]
+        [HttpGet]
+        public ResponceModel<Check> GetCart(string AuthKey)
+        {
+            //Проверяем запрос
+            var responce = _userHelper.IsUserAutorized<Check>(AuthKey);
+            if (responce != null)
+                return responce;
+
+            //Ищем или создаем корзину
+            var cart = _store.Checks.Where(f => f.UserID == _user.ID && !f.IsDone).FirstOrDefault();
+            if (cart == null)
+            {
+                cart = new Check()
+                {
+                    UserID = _user.ID,
+                    IsDone = false,
+                    CreatedDate = DateTime.Now
+                };
+
+                _store.Add(cart);
+                _store.SaveChanges();
+            }
+
+            return cart;
+        }
 
         //Положить товар в корзину
         [Route("[controller]")]
@@ -47,23 +74,12 @@ namespace RubiconeStoreBack.Controllers
             if (allGoods - selledGoods < request.Content.Count)
                 return new ResponceModel<AddToCartModel>().NotEnoughGoods();
 
-            //Ищим или создаем корзину
-            var check = _store.Checks.Where(f => f.UserID == _user.ID && !f.IsDone).FirstOrDefault();
-            if (check == null)
-            {
-                check = new Check()
-                {
-                    UserID = _user.ID,
-                    IsDone = false,
-                    CreatedDate = DateTime.Now
-                };
-
-                _store.Add(check);
-            }
+            //Ищем или создаем корзину
+            var cart = GetCart(request.AuthKey); //(Уже проверяли пользователя на корректность!)
 
             //Добавляем товар
             var storage = _store.Storages.Where(f => f.GoodID == request.Content.Good.ID).OrderByDescending(f => f.ID).First();
-            check.Sells.Add(new Sell
+            cart.Sells.Add(new Sell
             {
                 Count = request.Content.Count,
                 StorageID = storage.ID
@@ -80,29 +96,41 @@ namespace RubiconeStoreBack.Controllers
         [HttpDelete]
         public ResponceModel<bool> DeleteFromCart(string AuthKey, int ElementId)
         {
+            //Проверяем запрос
+            var responce = _userHelper.IsUserAutorized<Check>(AuthKey);
+            if (responce != null)
+                return new ResponceModel<bool>();
+
+            //Ищем или создаем корзину
+            var cartResponce = GetCart(request.AuthKey); //(Уже проверяли пользователя на корректность!)
+            var cart = cartResponce.content;
+
+            //Ищем элемент в ней
+            var itemToDel = cart.Include(f => f.Sells).ThenInclude(f => f.Storage).FirstOrDefault();
+            if(itemToDel == null)
+                return new ResponceModel<bool>();
+
+            //Удаляем товар
+            var storage = _store.Storages.Where(f => f.GoodID == request.Content.Good.ID).OrderByDescending(f => f.ID).First();
+            cart.Sells.Remove(itemToDel);
+
+            _store.SaveChanges();
+            
+            return new ResponceModel<bool>();
         }
 
         [Route("[controller]")]
         [HttpPatch]
         public ResponceModel<AddToCartModel> UpdateCart(RequestModel<AddToCartModel> request)
         {
+            //...
         }
 
-        //TODO: Доделать модель ответа вместо int
         [Route("[controller]/{AuthKey}")]
-        [HttpGet]
-        public ResponceModel<int> GetCart(string AuthKey)
-        {
-
-        }
-
-        //TODO: Доделать модель ответа вместо int
-        //TODO: Доделать модель запроса вместо int
-        [Route("[controller]/finish")]
         [HttpPost]
-        public ResponceModel<int> FinishCart(RequestModel<int> request)
+        public ResponceModel<bool> FinishCart(string AuthKey)
         {
-
+            //...
         }
 
 
