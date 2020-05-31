@@ -75,7 +75,7 @@ namespace RubiconeStoreBack.Controllers
                 return new ResponceModel<AddToCartModel>().NotEnoughGoods();
 
             //Ищем или создаем корзину
-            var cart = GetCart(request.AuthKey); //(Уже проверяли пользователя на корректность!)
+            var cart = GetCart(AuthKey); //(Уже проверяли пользователя на корректность!)
 
             //Добавляем товар
             var storage = _store.Storages.Where(f => f.GoodID == request.Content.Good.ID).OrderByDescending(f => f.ID).First();
@@ -97,12 +97,12 @@ namespace RubiconeStoreBack.Controllers
         public ResponceModel<bool> DeleteFromCart(string AuthKey, int ElementId)
         {
             //Проверяем запрос
-            var responce = _userHelper.IsUserAutorized<Check>(AuthKey);
+            var responce = _userHelper.IsUserAutorized<bool>(AuthKey);
             if (responce != null)
-                return new ResponceModel<bool>();
+                return responce;
 
             //Ищем или создаем корзину
-            var cartResponce = GetCart(request.AuthKey); //(Уже проверяли пользователя на корректность!)
+            var cartResponce = GetCart(AuthKey); //(Уже проверяли пользователя на корректность!)
             var cart = cartResponce.content;
 
             //Ищем элемент в ней
