@@ -148,14 +148,48 @@ namespace RubiconeStoreBack.Controllers
         [HttpPatch]
         public ResponceModel<CartItemModel> UpdateCart(RequestModel<CartItemModel> request)
         {
-            //...
+            //Проверяем запрос
+            var responce = CheckRequest<CartItemModel>(request);
+            if (responce != null)
+                return responce;
+            
+            //Получаем корзину
+            var cart = GetCartInner();
+
+            //Получаем премет
+            var updatedItem = cart.Sells.Where(f => f.Storage.Good.ID == request.Content.Good.ID);
+            
+            //Проверяем количество
+            var allGoods = _store.Storages.Where(f => f.GoodID == request.Content.Good.ID).Sum(f => f.Count);
+            var selledGoods = _store.Sells.Where(f => f.Storage.GoodID == request.Content.Good.ID).Sum(f => f.Count);
+
+            if (allGoods - selledGoods < request.Content.Count)
+                return new ResponceModel<CartItemModel>().NotEnoughGoods();
+
+            //Меняем количество исходного предмета
+            updatedItem.Count = request.Content.Count;
+
+            _store.SaveChanges();
+
+            return new ResponceModel<CartItemModel>();
         }
 
         [Route("[controller]/{AuthKey}")]
         [HttpPost]
         public ResponceModel<bool> FinishCart(string AuthKey)
         {
-            //...
+            //Проверяем запрос
+            var responce = CheckRequest<bool>(AuthKey);
+            if (responce != null)
+                return responce;
+
+            //Получаем корзину
+            var cart = GetCartInner();
+
+            //Ставим флаг завершенности
+            cart.IsDone = true;
+
+            return new ResponceModel<bool>();
         }
 
 
