@@ -18,6 +18,7 @@ namespace RubiconeStoreBack.Controllers
         protected readonly ILogger<T> _logger;
         protected readonly UserHelper _userHelper;
         protected readonly DbStore _store;
+        protected User _user;
 
         protected BaseController(ILogger<T> logger, UserHelper userHelper, DbStore store)
         {
@@ -34,6 +35,8 @@ namespace RubiconeStoreBack.Controllers
 
             if (!request.Content.IsModelRight())
                 return new ResponceModel<T>().FieldEmptyError();
+
+            _user = _userHelper.GetUser(request.AuthKey);
 
             return null;
         }

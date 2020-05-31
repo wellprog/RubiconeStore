@@ -45,5 +45,11 @@ namespace RubiconeStoreBack.Helpers
 
             return null;
         }
+
+        public User GetUser(string sessionKey)
+        {
+            var userSession = _store.UserSessions.Include(f => f.User).Where(f => f.SessionToken == sessionKey && f.IsActive == true).FirstOrDefault();
+            return userSession?.User;
+        }
     }
 }
