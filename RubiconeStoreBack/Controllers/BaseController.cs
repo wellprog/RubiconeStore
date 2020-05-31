@@ -27,19 +27,24 @@ namespace RubiconeStoreBack.Controllers
             _store = store;
         }
 
-        protected ResponceModel<T> CheckRequest<T>(RequestModel<T> request) where T : IValidate
+        protected ResponceModel<Responce> CheckRequest<Responce>(RequestModel<Responce> request) where Responce : IValidate
         {
-            var responce = _userHelper.IsUserAutorized<T>(request.AuthKey);
+            if (!request.Content.IsModelRight())
+                return new ResponceModel<Responce>().FieldEmptyError();
+
+            return CheckRequest<Responce>(request.AuthKey);
+        }
+
+        protected ResponceModel<Responce> CheckRequest<Responce>(string AuthKey)
+        {
+            var responce = _userHelper.IsUserAutorized<Responce>(AuthKey);
             if (responce != null) return responce;
 
-
-            if (!request.Content.IsModelRight())
-                return new ResponceModel<T>().FieldEmptyError();
-
-            _user = _userHelper.GetUser(request.AuthKey);
+            _user = _userHelper.GetUser(AuthKey);
 
             return null;
         }
+
 
         public ResponceModel<Req> StoreOne<Req>(RequestModel<Req> request) where Req : IValidate
         {
