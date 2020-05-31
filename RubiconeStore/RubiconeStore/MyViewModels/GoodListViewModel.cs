@@ -59,6 +59,7 @@ namespace RubiconeStore.MyViewModels
                 };
 
                 good.AddLeftSwipe("Delete", Color.Red, new Command(async f => await DeleteGood(f as Good)));
+                good.AddLeftSwipe("Storage", Color.Blue, new Command(async f => await ShowStorage(f as Good)));
                 good.AddRightSwipe("Edit", Color.Yellow, new Command(async f => await EditGood(f as Good)));
                 good.AddRightSwipe("Params", Color.Gray, new Command(async f => await ShowParams(f as Good)));
 
@@ -84,6 +85,11 @@ namespace RubiconeStore.MyViewModels
         {
             GoodPropertiesModel itemGoodProperties = await requestHelper.Get<GoodPropertiesModel>($"http://rstore.kikoriki.space/GoodsProperties/{ sessionData.SessionToken }/{ item.ID }");
             await Page.Navigation.PushAsync(new SimpleTablePage() { ViewModel = new GoodPropertiesListViewModel(itemGoodProperties) });
+        }
+
+        public async Task ShowStorage(Good item)
+        {
+            await Page.Navigation.PushAsync(new SimpleTablePage() { ViewModel = new StorageViewViewModel(item) });
         }
     }
 }

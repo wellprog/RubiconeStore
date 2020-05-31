@@ -20,7 +20,7 @@ namespace RubiconeStore
 
             MainPage = new NavigationPage(new LoginPage());
             //MainPage = new NavigationPage(new EditGood());
-            MainPage = new ClientTabs();
+            //MainPage = new ClientTabs();
         }
 
         protected override void OnStart()

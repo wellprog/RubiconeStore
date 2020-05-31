@@ -35,6 +35,6 @@ namespace RubiconeStoreBack.Controllers
         
         [Route("[controller]")]
         [HttpPost]
-        public ResponceModel<Storage> StoreOne(RequestModel<Storage> request) => StoreOne(request);
+        public ResponceModel<Storage> StoreOne(RequestModel<Storage> request) => base.StoreOne(request);
     }
 }

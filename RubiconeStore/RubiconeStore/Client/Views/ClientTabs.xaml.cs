@@ -21,7 +21,7 @@ namespace RubiconeStore.Client.Views
 
             NavigationLogin.PushAsync(new LoginPage(ShowUser));
             NavigationMain.PushAsync(new SimpleTablePage() { ViewModel = new CategoryViewModel() });
-            NavigationBasket.PushAsync(new SimpleTablePage() { ViewModel = new ... });
+            //NavigationBasket.PushAsync(new SimpleTablePage() { ViewModel = new ... });
         }
 
         private async void ShowUser()
