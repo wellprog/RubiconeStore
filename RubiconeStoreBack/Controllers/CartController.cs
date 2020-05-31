@@ -157,7 +157,7 @@ namespace RubiconeStoreBack.Controllers
             var cart = GetCartInner();
 
             //Получаем премет
-            var updatedItem = cart.Sells.Where(f => f.Storage.Good.ID == request.Content.Good.ID);
+            var updatedItem = cart.Sells.Where(f => f.Storage.Good.ID == request.Content.Good.ID).FirstOrDefault();
             
             //Проверяем количество
             var allGoods = _store.Storages.Where(f => f.GoodID == request.Content.Good.ID).Sum(f => f.Count);
