@@ -21,13 +21,14 @@ namespace RubiconeStore.MyViewModels
         private readonly RequestHelper requestHelper;
         private readonly SessionDataStore sessionData;
         private readonly Page page;
-
+        private int startCount;
         public EditCartItemViewModel(CartItemModel cartItem, HttpClient httpClient, Page page)
         {
             this.cartItem = cartItem;
             requestHelper = new RequestHelper(httpClient);
             sessionData = new SessionDataStore();
             SaveCommand = new Command(SaveCartItem, CanSave);
+            startCount = cartItem.Count;
             this.page = page;
         }
 
@@ -56,7 +57,7 @@ namespace RubiconeStore.MyViewModels
 
         public bool CanSave()
         {
-            return cartItem.Count != 0;
+            return (cartItem.Count != 0 && cartItem.Count != startCount);
         }
 
         public async void SaveCartItem()
