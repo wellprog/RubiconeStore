@@ -21,13 +21,14 @@ namespace RubiconeStore.MyViewModels
         private readonly RequestHelper requestHelper;
         private readonly SessionDataStore sessionData;
         private readonly Page page;
-
+        private int startCount;
         public EditCartItemViewModel(CartItemModel cartItem, HttpClient httpClient, Page page)
         {
             this.cartItem = cartItem;
             requestHelper = new RequestHelper(httpClient);
             sessionData = new SessionDataStore();
             SaveCommand = new Command(SaveCartItem, CanSave);
+            startCount = cartItem.Count;
             this.page = page;
         }
 
@@ -39,16 +40,15 @@ namespace RubiconeStore.MyViewModels
             }
         }
 
-        private int _count;
         public int Count
         {
             get
             {
-                return _count;
+                return cartItem.Count;
             }
             set
             {
-                _count = value;
+                cartItem.Count = value;
                 OnPropertyChanged();
             }
         }
@@ -57,7 +57,7 @@ namespace RubiconeStore.MyViewModels
 
         public bool CanSave()
         {
-            return (Count != cartItem.Count);
+            return (cartItem.Count != 0 && cartItem.Count != startCount);
         }
 
         public async void SaveCartItem()
