@@ -39,16 +39,15 @@ namespace RubiconeStore.MyViewModels
             }
         }
 
-        private int _count;
         public int Count
         {
             get
             {
-                return _count;
+                return cartItem.Count;
             }
             set
             {
-                _count = value;
+                cartItem.Count = value;
                 OnPropertyChanged();
             }
         }
@@ -57,7 +56,7 @@ namespace RubiconeStore.MyViewModels
 
         public bool CanSave()
         {
-            return (Count != cartItem.Count);
+            return cartItem.Count != 0;
         }
 
         public async void SaveCartItem()
