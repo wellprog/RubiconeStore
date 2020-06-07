@@ -104,11 +104,19 @@ namespace RubiconeStoreBack.Controllers
 
             //Добавляем товар
             var storage = _store.Storages.Where(f => f.GoodID == request.Content.Good.ID).OrderByDescending(f => f.ID).First();
-            cart.Sells.Add(new Sell
+            var sell = cart.Sells.Where(f => f.StorageID == StorageID).FirstOrDefault();
+            if(sell != null)
             {
-                Count = request.Content.Count,
-                StorageID = storage.ID
-            });
+                sell.Count += request.Content.Count;
+            }
+            else
+            {
+                cart.Sells.Add(new Sell
+                {
+                    Count = request.Content.Count,
+                    StorageID = storage.ID
+                });
+            }
 
             _store.SaveChanges();
 
