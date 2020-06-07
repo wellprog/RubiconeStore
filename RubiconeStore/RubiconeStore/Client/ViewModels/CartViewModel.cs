@@ -36,7 +36,7 @@ namespace RubiconeStore.Client.ViewModels
             if (sessionData.SessionToken == null)
                 return;
 
-            var cart = await requestHelper.Get<CartModel>($"http://rstore.kikoriki.space/GoodCategory/{ sessionData.SessionToken }");
+            var cart = await requestHelper.Get<CartModel>($"http://rstore.kikoriki.space/Cart/{ sessionData.SessionToken }");
 
             Elements.Clear();
             foreach (var item in cart.CartItems)
