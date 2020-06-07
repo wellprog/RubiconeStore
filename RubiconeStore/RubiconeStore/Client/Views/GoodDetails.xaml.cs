@@ -30,6 +30,8 @@ namespace RubiconeStore.Client.Views
 
             InitializeComponent();
             BindingContext = good;
+
+            AddToCart.Command = new Command(AddToCartDelegate);
         }
 
         private void DrawAll()
@@ -53,6 +55,21 @@ namespace RubiconeStore.Client.Views
         {
             itemGoodProperties = await requestHelper.Get<GoodPropertiesModel>($"http://rstore.kikoriki.space/GoodsProperties/{ sessionData.SessionToken }/{ good.ID }");
             DrawAll();
+        }
+
+        private async void AddToCartDelegate()
+        {
+            await requestHelper.Post<CartItemModel, RequestModel<CartItemModel>>("http://rstore.kikoriki.space/Cart", new RequestModel<CartItemModel>
+            {
+                AuthKey = sessionData.SessionToken,
+                Content = new CartItemModel
+                {
+                    Good = good,
+                    Count = 1
+                }
+            });
+
+            await DisplayAlert("Добавление в корзину", $"Добавление в корзину товара { good.Title } прошло успешно", "Ok");
         }
     }
 }

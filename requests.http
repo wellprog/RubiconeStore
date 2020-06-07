@@ -1,6 +1,6 @@
-@AuthKey = fc71d4bc-1bfe-4a64-846d-c8b4cd8ccb6a
-# @BaseUrl = http://localhost:60521
-@BaseUrl = http://kikoriki.space:5000
+@AuthKey = bc7105ca-efcb-4dcd-aa9d-545fd91db6d1
+@BaseUrl = http://localhost:60521
+# @BaseUrl = http://kikoriki.space:5000
 
 ### Login
 GET {{BaseUrl}}/User?email=test&password=test
@@ -68,3 +68,26 @@ Content-Type: application/json
 
 ### Get properties
 GET {{BaseUrl}}/GoodsProperties/{{AuthKey}}/3
+
+
+
+
+
+
+#### Add to cart
+POST {{BaseUrl}}/Cart
+Content-Type: application/json
+
+{
+    "AuthKey" : "{{AuthKey}}",
+    "Content" : {
+        "Good" : {
+            "ID" : 5,
+            "Title" : "Test1",
+            "Text" : "Test",
+            "Price" : 100,
+            "GoodCategoryID" : 1
+        },
+        "Count" : 1
+    }
+}

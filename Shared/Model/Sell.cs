@@ -16,16 +16,10 @@ namespace Shared.Model
         // Relations
 
         [JsonIgnore]
-        public Good SelledGood { get; set; }
-        [JsonIgnore]
         public Storage Storage { get; set; }
         [JsonIgnore]
         public Check Check { get; set; }
 
-        public int getPrice()
-        {
-            return Count * SelledGood.Price;
-        }
         public bool IsModelRight()
         {
             return Count != 0;

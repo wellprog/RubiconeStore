@@ -24,8 +24,6 @@ namespace Shared.Model
         public List<UserSession> UserSessions { get; set; }
         [JsonIgnore]
         public List<Check> Checks { get; set; }
-        [JsonIgnore]
-        public Cart Cart { get; set; }
 
         public bool IsModelRight()
         {

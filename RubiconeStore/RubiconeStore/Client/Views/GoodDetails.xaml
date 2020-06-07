@@ -37,6 +37,8 @@
                 
             </StackLayout>
 
+            <Button Text="Add To Cart" x:Name="AddToCart" />
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
