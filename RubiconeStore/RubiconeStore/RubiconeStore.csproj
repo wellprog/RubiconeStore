@@ -61,17 +61,5 @@
     <None Update="MyViews\LoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="Views\AboutPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\ItemDetailPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\ItemsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\NewItemPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
   </ItemGroup>
 </Project>

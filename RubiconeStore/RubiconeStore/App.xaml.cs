@@ -1,8 +1,6 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using RubiconeStore.Services;
-using RubiconeStore.Views;
 using RubiconeStore.MyViews;
 using RubiconeStore.Client.Views;
 
