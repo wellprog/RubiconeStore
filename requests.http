@@ -1,13 +1,13 @@
-@AuthKey = 97095687-6765-4948-a39d-5094990cde31
-@BaseUrl = http://localhost:60521
-#@BaseUrl = http://kikoriki.space:5000
+@AuthKey = fc71d4bc-1bfe-4a64-846d-c8b4cd8ccb6a
+# @BaseUrl = http://localhost:60521
+@BaseUrl = http://kikoriki.space:5000
 
 ### Login
-GET http://kikoriki.space:5000/User?email=test&password=test
+GET {{BaseUrl}}/User?email=test&password=test
 
 
 ### Register
-POST http://kikoriki.space:5000/User
+POST {{BaseUrl}}/User
 Content-Type: application/json
 
 {
@@ -17,22 +17,6 @@ Content-Type: application/json
     "Email":"123",
     "Password":"test"
 }
-
-
-### Register
-PATCH http://kikoriki.space:5000/User
-Content-Type: application/json
-
-{
-    "FirstName":"test",
-    "LastName":"test",
-    "Login":"test",
-    "Email":"123",
-    "Password":"test"
-}
-
-
-
 
 ### GoodProperty
 GET {{BaseUrl}}/GoodProperty/{{AuthKey}}
@@ -51,6 +35,35 @@ GET {{BaseUrl}}/Good/{{AuthKey}}
 
 ### DELETE GOOD
 DELETE {{BaseUrl}}/Good/{{AuthKey}}/1
+
+#### Add good
+POST {{BaseUrl}}/Good HTTP/1.1
+Content-Type: application/json
+
+{
+    "AuthKey" : "{{AuthKey}}",
+    "Content" : {
+        "Title" : "Test",
+        "Text" : "Test",
+        "Price" : 100,
+        "GoodCategoryID" : 1
+    }
+}
+
+#### UPDATE good
+PATCH {{BaseUrl}}/Good HTTP/1.1
+Content-Type: application/json
+
+{
+    "AuthKey" : "{{AuthKey}}",
+    "Content" : {
+        "ID" : 5,
+        "Title" : "Test1",
+        "Text" : "Test",
+        "Price" : 100,
+        "GoodCategoryID" : 1
+    }
+}
 
 
 ### Get properties

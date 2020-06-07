@@ -1,4 +1,5 @@
 ﻿using RubiconeStore.Client.ViewModels;
+using RubiconeStore.MyViewModels;
 using RubiconeStore.MyViews;
 
 using System;
@@ -22,6 +23,10 @@ namespace RubiconeStore.Client.Views
             NavigationLogin.PushAsync(new LoginPage(ShowUser));
             NavigationMain.PushAsync(new SimpleTablePage() { ViewModel = new CategoryViewModel() });
             //NavigationBasket.PushAsync(new SimpleTablePage() { ViewModel = new ... });
+            NavigationAdmin.PushAsync(new SimpleTablePage
+            {
+                ViewModel = new AdminViewModel()
+            });
         }
 
         private async void ShowUser()

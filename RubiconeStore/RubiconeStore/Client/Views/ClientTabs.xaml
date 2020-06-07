@@ -9,4 +9,5 @@
     <NavigationPage Title="Авторизация" x:Name="NavigationLogin" />
     <NavigationPage Title="Каталог" x:Name="NavigationMain" />
     <NavigationPage Title="Корзина" x:Name="NavigationBasket" />
+    <NavigationPage Title="Админка" x:Name="NavigationAdmin" />
 </TabbedPage>

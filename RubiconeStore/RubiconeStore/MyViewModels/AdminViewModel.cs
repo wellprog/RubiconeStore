@@ -1,4 +1,5 @@
-﻿using RubiconeStore.MyModels;
+﻿using RubiconeStore.DataStores;
+using RubiconeStore.MyModels;
 using RubiconeStore.MyViewInterfaces;
 using RubiconeStore.MyViews;
 
@@ -30,13 +31,11 @@ namespace RubiconeStore.MyViewModels
 
         public Page Page { get; set; }
 
+        private readonly SessionDataStore sessionData = new SessionDataStore();
+
         public AdminViewModel()
         {
             Elements = new ObservableCollection<IExecutableModel>();
-
-            Elements.Add(new ActionModel<Actions>(Actions.User) { Text = "Пользователи", ExecAction = ExecAction });
-            Elements.Add(new ActionModel<Actions>(Actions.Category) { Text = "Категории товаров", ExecAction = ExecAction });
-            Elements.Add(new ActionModel<Actions>(Actions.Good) { Text = "Товары", ExecAction = ExecAction });            
         }
 
         private async Task ExecAction(Actions a)
@@ -54,7 +53,14 @@ namespace RubiconeStore.MyViewModels
 
         public async Task Appearing()
         {
-            return;
+            Elements.Clear();
+
+            if (sessionData.SessionToken == null)
+                return;
+
+            Elements.Add(new ActionModel<Actions>(Actions.User) { Text = "Пользователи", ExecAction = ExecAction });
+            Elements.Add(new ActionModel<Actions>(Actions.Category) { Text = "Категории товаров", ExecAction = ExecAction });
+            Elements.Add(new ActionModel<Actions>(Actions.Good) { Text = "Товары", ExecAction = ExecAction });
         }
     }
 }
