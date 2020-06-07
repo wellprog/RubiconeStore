@@ -2,23 +2,21 @@
 using RubiconeStore.MyViewModels;
 using RubiconeStore.MyViews;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 
 namespace RubiconeStore.Client.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ClientTabs : TabbedPage
+    public partial class ClientTabs : Xamarin.Forms.TabbedPage
     {
         public ClientTabs()
         {
             InitializeComponent();
+
+            //On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
 
             NavigationLogin.PushAsync(new LoginPage(ShowUser));
             NavigationMain.PushAsync(new SimpleTablePage() { ViewModel = new CategoryViewModel() });
