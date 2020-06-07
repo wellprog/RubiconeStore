@@ -45,7 +45,7 @@ namespace RubiconeStore.Client.ViewModels
                 {
                     Text = item.Good.Title,
                     Description = item.Count.ToString(),
-                    ExecAction = async f => await Page.Navigation.PushAsync(new EditGood(f.Good))
+                    ExecAction = async f => await Page.Navigation.PushAsync(new EditCartItem(item))
                 };
 
                 Elements.Add(cartItem);
