@@ -48,8 +48,16 @@ namespace RubiconeStore.Client.ViewModels
                     ExecAction = async f => await Page.Navigation.PushAsync(new EditCartItem(item))
                 };
 
+                cartItem.AddLeftSwipe("Delete", Color.Red, new Command(async f => await DeleteCartItem(f as CartItemModel)));
+
                 Elements.Add(cartItem);
             }
+        }
+        public async Task DeleteCartItem(CartItemModel cartItem)
+        {
+            await requestHelper.Delete<CartItemModel>($"http://rstore.kikoriki.space/Cart/{ sessionData.SessionToken }/{ cartItem.Good.ID }");
+
+            await Page.DisplayAlert("Delete Good success!", cartItem.Good.Title, "Ok");
         }
     }
 }
