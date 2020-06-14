@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 using Xamarin.Forms;
 
@@ -25,11 +26,21 @@ namespace RubiconeStore.Client.ViewModels
 
         public ObservableCollection<IExecutableModel> Elements { get; } = new ObservableCollection<IExecutableModel>();
 
-        public IEnumerable<ToolbarItem> ToolbarItems { get; } = new ToolbarItem[0];
+        public IEnumerable<ToolbarItem> ToolbarItems { get; set; } = new ToolbarItem[0];
 
         private readonly RequestHelper requestHelper = new RequestHelper();
         private readonly SessionDataStore sessionData = new SessionDataStore();
 
+        public Command PayCommand { get; }
+        public CartViewModel()
+        {
+            PayCommand = new Command(Pay);
+            ToolbarItems.Append<ToolbarItem>(new ToolbarItem
+            {
+                Text = "Оплатить",
+                Command = PayCommand
+            });
+        }
 
         public async Task Appearing()
         {
@@ -48,8 +59,21 @@ namespace RubiconeStore.Client.ViewModels
                     ExecAction = async f => await Page.Navigation.PushAsync(new EditCartItem(item))
                 };
 
+                cartItem.AddLeftSwipe("Delete", Color.Red, new Command(async f => await DeleteCartItem(f as CartItemModel)));
+
                 Elements.Add(cartItem);
             }
+        }
+        public async Task DeleteCartItem(CartItemModel cartItem)
+        {
+            await requestHelper.Delete<CartItemModel>($"http://rstore.kikoriki.space/Cart/{ sessionData.SessionToken }/{ cartItem.Good.ID }");
+
+            await Page.DisplayAlert("Delete Good success!", cartItem.Good.Title, "Ok");
+        }
+
+        public async void Pay()
+        {
+            await Page.Navigation.PushAsync(new PayPage());
         }
     }
 }
