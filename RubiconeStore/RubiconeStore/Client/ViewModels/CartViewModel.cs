@@ -26,7 +26,7 @@ namespace RubiconeStore.Client.ViewModels
 
         public ObservableCollection<IExecutableModel> Elements { get; } = new ObservableCollection<IExecutableModel>();
 
-        public IEnumerable<ToolbarItem> ToolbarItems { get; set; } = new ToolbarItem[0];
+        public IEnumerable<ToolbarItem> ToolbarItems { get; set; }
 
         private readonly RequestHelper requestHelper = new RequestHelper();
         private readonly SessionDataStore sessionData = new SessionDataStore();
@@ -35,11 +35,13 @@ namespace RubiconeStore.Client.ViewModels
         public CartViewModel()
         {
             PayCommand = new Command(Pay);
-            ToolbarItems.Append<ToolbarItem>(new ToolbarItem
+            var items = new ToolbarItem[1];
+            items[0] = new ToolbarItem
             {
                 Text = "Оплатить",
                 Command = PayCommand
-            });
+            };
+            ToolbarItems = items;
         }
 
         public async Task Appearing()

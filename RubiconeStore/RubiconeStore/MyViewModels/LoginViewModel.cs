@@ -78,7 +78,7 @@ namespace RubiconeStore.MyViewModels
 
             UserAuthModel model = await requestHelper.Get<UserAuthModel>("http://rstore.kikoriki.space/User", new Dictionary<string, object>
             {
-                { "email", login },
+                { "login", login },
                 { "password", password }
             });
 

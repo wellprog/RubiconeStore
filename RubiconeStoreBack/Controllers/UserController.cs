@@ -29,14 +29,14 @@ namespace RubiconeStoreBack.Controllers
         }
 
         [HttpGet]
-        public ResponceModel<UserAuthModel> Autorize(string email, string password)
+        public ResponceModel<UserAuthModel> Autorize(string login, string password)
         {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
             {
                 return new ResponceModel<UserAuthModel>().FieldEmptyError();
             }
 
-            var user = _store.Users.Where(f => f.Email == email).Include(f => f.UserSessions).FirstOrDefault();
+            var user = _store.Users.Where(f => f.Login == login).Include(f => f.UserSessions).FirstOrDefault();
 
             if (user == null)
                 return new ResponceModel<UserAuthModel>().UserNotFound();
