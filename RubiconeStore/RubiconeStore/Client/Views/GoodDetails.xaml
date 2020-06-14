@@ -39,7 +39,7 @@
 
             <StackLayout Orientation="Horizontal">
                 <Label Text="Количество" WidthRequest="100" Margin="20, 0,0,0" />
-                <Editor d:Text="value" Text="{Binding GoodCategory.Name}" />
+                <Entry x:Name="ItemCount" Text="0" />
             </StackLayout>
 
             <Button Text="Add To Cart" x:Name="AddToCart" />

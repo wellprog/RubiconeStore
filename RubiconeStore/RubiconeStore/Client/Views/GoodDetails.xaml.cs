@@ -59,17 +59,25 @@ namespace RubiconeStore.Client.Views
 
         private async void AddToCartDelegate()
         {
-            await requestHelper.Post<CartItemModel, RequestModel<CartItemModel>>("http://rstore.kikoriki.space/Cart", new RequestModel<CartItemModel>
-            {
-                AuthKey = sessionData.SessionToken,
-                Content = new CartItemModel
-                {
-                    Good = good,
-                    Count = 1
-                }
-            });
+            int count = 0;
 
-            await DisplayAlert("Добавление в корзину", $"Добавление в корзину товара { good.Title } прошло успешно", "Ok");
+            if (int.TryParse(ItemCount.Text, out count))
+            {
+                await requestHelper.Post<CartItemModel, RequestModel<CartItemModel>>("http://rstore.kikoriki.space/Cart", new RequestModel<CartItemModel>
+                {
+                    AuthKey = sessionData.SessionToken,
+                    Content = new CartItemModel
+                    {
+                        Good = good,
+                        Count = count
+                    }
+                });
+
+                await DisplayAlert("Добавление в корзину", $"Добавление в корзину товара { good.Title } прошло успешно", "Ok");
+            } else
+            {
+                await DisplayAlert("Ошибка", $"Неверное количество товара { good.Title }", "Ok");
+            }
         }
     }
 }
