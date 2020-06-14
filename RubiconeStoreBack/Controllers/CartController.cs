@@ -197,6 +197,8 @@ namespace RubiconeStoreBack.Controllers
             //Ставим флаг завершенности
             cart.IsDone = true;
 
+            _store.SaveChanges();
+
             return new ResponceModel<bool>();
         }
 

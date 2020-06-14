@@ -23,28 +23,30 @@ namespace RubiconeStore.MyViewModels
 
         public Command PayCommand { get; }
 
+        private string _cardNumber;
         public string CardNumber
         {
             get
             {
-                return CardNumber;
+                return _cardNumber;
             }
             set
             {
-                CardNumber = value;
+                _cardNumber = value;
                 OnPropertyChanged();
             }
         }
 
+        private string _CVCCode;
         public string CVCCode
         {
             get
             {
-                return CVCCode;
+                return _CVCCode;
             }
             set
             {
-                CVCCode = value;
+                _CVCCode = value;
                 OnPropertyChanged();
             }
         }
@@ -66,7 +68,7 @@ namespace RubiconeStore.MyViewModels
         {
             //*Throw money using cvc and card code*
 
-            await requestHelper.Post<bool, RequestModel<bool>>($"http://rstore.kikoriki.space/Cart{ sessionData.SessionToken }", null);
+            await requestHelper.Post<bool, RequestModel<bool>>($"http://rstore.kikoriki.space/Cart/{ sessionData.SessionToken }", null);
 
             await page.Navigation.PopAsync();
         }
