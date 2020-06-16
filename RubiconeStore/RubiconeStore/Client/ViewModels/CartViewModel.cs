@@ -32,14 +32,22 @@ namespace RubiconeStore.Client.ViewModels
         private readonly SessionDataStore sessionData = new SessionDataStore();
 
         public Command PayCommand { get; }
+        public Command ShowHistoryCommand { get; }
         public CartViewModel()
         {
             PayCommand = new Command(Pay);
-            var items = new ToolbarItem[1];
+            ShowHistoryCommand = new Command(ShowHistory);
+
+            var items = new ToolbarItem[2];
             items[0] = new ToolbarItem
             {
                 Text = "Оплатить",
                 Command = PayCommand
+            };
+            items[1] = new ToolbarItem
+            {
+                Text = "История",
+                Command = ShowHistoryCommand
             };
             ToolbarItems = items;
         }
@@ -76,6 +84,11 @@ namespace RubiconeStore.Client.ViewModels
         public async void Pay()
         {
             await Page.Navigation.PushAsync(new PayPage());
+        }
+
+        public async void ShowHistory()
+        {
+            await Page.Navigation.PushAsync(new SimpleTablePage() { ViewModel = new CheckListViewModel() });
         }
     }
 }
