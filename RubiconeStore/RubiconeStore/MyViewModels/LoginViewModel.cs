@@ -25,15 +25,15 @@ namespace RubiconeStore.MyViewModels
         private readonly Page page;
         public Action NextAction { get; set; }
 
-        private string login = "";
-        public string Login { 
+        private string loginOrEmail = "";
+        public string LoginOrEmail { 
             get
             {
-                return login;
+                return loginOrEmail;
             }
             set
             {
-                SetProperty(ref login, value);
+                SetProperty(ref loginOrEmail, value);
             }
         }
 
@@ -58,7 +58,7 @@ namespace RubiconeStore.MyViewModels
             this.page = page;
             _sessionDataStore = new SessionDataStore();
 
-            LoginCommand = new Command(LoginMe, () => !string.IsNullOrEmpty(login) && !string.IsNullOrEmpty(password));
+            LoginCommand = new Command(LoginMe, () => !string.IsNullOrEmpty(LoginOrEmail) && !string.IsNullOrEmpty(Password));
             RegisterCommand = new Command(async () => await page.Navigation.PushModalAsync(new RegisterPage()));
         }
 
@@ -70,7 +70,7 @@ namespace RubiconeStore.MyViewModels
 
         public async void LoginMe()
         {
-            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(loginOrEmail) || string.IsNullOrEmpty(password))
             {
                 await page.DisplayAlert("Ошибка", "Имя пользователя и пароль должны быть заполнены", "Ok");
                 return;
@@ -78,7 +78,7 @@ namespace RubiconeStore.MyViewModels
 
             UserAuthModel model = await requestHelper.Get<UserAuthModel>("http://rstore.kikoriki.space/User", new Dictionary<string, object>
             {
-                { "login", login },
+                { "loginOrEmail", loginOrEmail },
                 { "password", password }
             });
 

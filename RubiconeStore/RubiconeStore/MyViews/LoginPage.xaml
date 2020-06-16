@@ -8,11 +8,11 @@
              x:Class="RubiconeStore.MyViews.LoginPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Введите логин"
+            <Label Text="Введите логин или EMail"
                 VerticalOptions="Start" 
                 HorizontalOptions="CenterAndExpand"
                 Margin="0,120,0,0"/>
-            <Entry Text="{Binding Login}" Margin="40,0,40,0" HorizontalTextAlignment="Center" />
+            <Entry Text="{Binding LoginOrEmail}" Margin="40,0,40,0" HorizontalTextAlignment="Center" />
             <Label Text="Введите пароль"
                 VerticalOptions="Start" 
                 HorizontalOptions="CenterAndExpand"
