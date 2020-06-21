@@ -29,10 +29,7 @@ namespace RubiconeStoreBack.Controllers
         [HttpGet]
         public ResponceModel<IEnumerable<Check>> GetHistory(string AuthKey)
         {
-            var history = _store.Checks.Where(f => f.UserID == _user.ID && f.IsDone)
-                                    .Include(f => f.Sells)
-                                    .ThenInclude(f => f.Storage)
-                                    .ThenInclude(f => f.Good);
+            var history = _store.Checks.Where(f => f.UserID == _user.ID && f.IsDone);
 
             return new ResponceModel<IEnumerable<Check>> { content = history };
         }

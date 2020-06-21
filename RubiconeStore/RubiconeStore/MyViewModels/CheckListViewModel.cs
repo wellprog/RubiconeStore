@@ -34,6 +34,8 @@ namespace RubiconeStore.Client.ViewModels
             sessionData = new SessionDataStore();
 
             requestHelper = new RequestHelper();
+
+            Elements = new ObservableCollection<IExecutableModel>();
         }
 
         public async Task Appearing()
