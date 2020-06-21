@@ -8,13 +8,15 @@ namespace Shared.Model
 {
     public class GoodCount
     {
-        public Good Good { get; }
-        public int Count { get; }
+        public Good Good { get; set; }
+        public int Count { get; set; }
 
-        public GoodCount(Good _good, int _count)
-        {
-            Good = _good;
-            Count = _count;
-        }
+        // public GoodCount() { }
+
+        //public GoodCount(Good _good, int _count)
+        //{
+        //    Good = _good;
+        //    Count = _count;
+        //}
     }
 }

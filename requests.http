@@ -1,9 +1,9 @@
-@AuthKey = bc7105ca-efcb-4dcd-aa9d-545fd91db6d1
+@AuthKey = 00b88241-1c94-40ad-b796-f3c3791bce28
 @BaseUrl = http://localhost:60521
 # @BaseUrl = http://kikoriki.space:5000
 
 ### Login
-GET {{BaseUrl}}/User?email=test&password=test
+GET {{BaseUrl}}/User?loginOrEmail=test&password=test
 
 
 ### Register
