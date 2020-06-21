@@ -31,7 +31,15 @@ namespace RubiconeStore.Helpers
             var responce = await httpClient.GetAsync(url);
             return await GetResponce<T>(responce);
         }
-        
+
+        public async Task<ResponceModel<T>> GetWithResponce<T>(string URL, Dictionary<string, object> queryParams = null)
+        {
+            string url = Url(URL, queryParams);
+
+            var responce = await httpClient.GetAsync(url);
+            return await GetAllResponce<T>(responce);
+        }
+
         public async Task<T> Delete<T>(string URL, Dictionary<string, object> queryParams = null)
         {
             string url = Url(URL, queryParams);
@@ -61,7 +69,7 @@ namespace RubiconeStore.Helpers
             return await GetResponce<T>(responce);
         }
 
-        private static async Task<T> GetResponce<T>(HttpResponseMessage responce)
+        private static async Task<ResponceModel<T>> GetAllResponce<T>(HttpResponseMessage responce)
         {
             if (responce.StatusCode != System.Net.HttpStatusCode.OK)
             {
@@ -71,10 +79,11 @@ namespace RubiconeStore.Helpers
             var jsonString = await responce.Content.ReadAsStringAsync();
             ResponceModel<T> model = JsonConvert.DeserializeObject<ResponceModel<T>>(jsonString);
 
-            if (model.ErrorCode != 0)
-                throw new Exception("Ошибка запроса" + model.ErrorDescription);
-
-            return model.content;
+            return model;
+        }
+        private static async Task<T> GetResponce<T>(HttpResponseMessage responce)
+        {
+            return (await GetAllResponce<T>(responce)).content;
         }
 
 
