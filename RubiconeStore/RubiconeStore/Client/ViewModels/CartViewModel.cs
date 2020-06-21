@@ -26,20 +26,30 @@ namespace RubiconeStore.Client.ViewModels
 
         public ObservableCollection<IExecutableModel> Elements { get; } = new ObservableCollection<IExecutableModel>();
 
-        public IEnumerable<ToolbarItem> ToolbarItems { get; set; } = new ToolbarItem[0];
+        public IEnumerable<ToolbarItem> ToolbarItems { get; set; }
 
         private readonly RequestHelper requestHelper = new RequestHelper();
         private readonly SessionDataStore sessionData = new SessionDataStore();
 
         public Command PayCommand { get; }
+        public Command ShowHistoryCommand { get; }
         public CartViewModel()
         {
             PayCommand = new Command(Pay);
-            ToolbarItems.Append<ToolbarItem>(new ToolbarItem
+            ShowHistoryCommand = new Command(ShowHistory);
+
+            var items = new ToolbarItem[2];
+            items[0] = new ToolbarItem
             {
                 Text = "Оплатить",
                 Command = PayCommand
-            });
+            };
+            items[1] = new ToolbarItem
+            {
+                Text = "История",
+                Command = ShowHistoryCommand
+            };
+            ToolbarItems = items;
         }
 
         public async Task Appearing()
@@ -74,6 +84,11 @@ namespace RubiconeStore.Client.ViewModels
         public async void Pay()
         {
             await Page.Navigation.PushAsync(new PayPage());
+        }
+
+        public async void ShowHistory()
+        {
+            await Page.Navigation.PushAsync(new SimpleTablePage() { ViewModel = new CheckListViewModel() });
         }
     }
 }
