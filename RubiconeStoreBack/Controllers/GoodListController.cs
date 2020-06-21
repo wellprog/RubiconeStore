@@ -60,7 +60,7 @@ namespace RubiconeStoreBack.Controllers
             {
                 var t = _store.Storages.Where(f => f.GoodID == goods[i].ID).FirstOrDefault();
                 int count = t == null ? 0 : t.Count;
-                resp.Append(new GoodCount(goods[i], count));
+                resp[i] = new GoodCount(goods[i], count);
             }
            
             return new ResponceModel<IEnumerable<GoodCount>> { content = resp };
