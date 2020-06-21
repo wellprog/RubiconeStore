@@ -32,21 +32,36 @@ namespace RubiconeStore.Client.ViewModels
 
         public async Task Appearing()
         {
-            var items = await requestHelper.Get<IEnumerable<Good>>($"http://rstore.kikoriki.space/GoodList/{ sessionData.SessionToken }/{ category.ID }");
+            //var items = await requestHelper.Get<IEnumerable<Good>>($"http://rstore.kikoriki.space/GoodList/{ sessionData.SessionToken }/{ category.ID }");
 
+            //Elements.Clear();
+            //foreach (var item in items)
+            //{
+            //    var good = new ActionModel<Good>(item)
+            //    {
+            //        Text = item.Title,
+            //        Description = item.Price.ToString(),
+            //        ExecAction = async f => { item.GoodCategory = category; await Page.Navigation.PushAsync(new GoodDetails(item)); }
+            //    };
+
+            //    Elements.Add(good);
+            //}
+
+
+            var items = await requestHelper.Get<IEnumerable<GoodCount>>($"http://rstore.kikoriki.space/GoodList/{ sessionData.SessionToken }/{ category.ID }");
+            
             Elements.Clear();
             foreach (var item in items)
             {
-                var good = new ActionModel<Good>(item)
+                var good = new ActionModel<GoodCount>(item)
                 {
-                    Text = item.Title,
-                    Description = item.Price.ToString(),
-                    ExecAction = async f => { item.GoodCategory = category; await Page.Navigation.PushAsync(new GoodDetails(item)); }
+                    Text = $"{item.Good.Title} {item.Count}",
+                    Description = item.Good.Price.ToString(),
+                    ExecAction = async f => { item.Good.GoodCategory = category; await Page.Navigation.PushAsync(new GoodDetails(item.Good)); }
                 };
 
                 Elements.Add(good);
             }
-
         }
 
     }
