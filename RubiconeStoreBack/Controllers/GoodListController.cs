@@ -52,13 +52,14 @@ namespace RubiconeStoreBack.Controllers
             if (responce != null) return responce;
 
             Good[] goods = _store.Goods.Where(f => f.GoodCategoryID == CategoryId).ToArray();
-            int[] counts = new int[goods.Length];
+            //int[] counts = new int[goods.Length];
 
             GoodCount[] resp = new GoodCount[goods.Length];
 
             for (int i = 0; i < goods.Count(); i++)
             {
-                int count = (_store.Storages.Where(f => f.GoodID == goods[i].ID) as Storage).Count;
+                var t = _store.Storages.Where(f => f.GoodID == goods[i].ID).FirstOrDefault();
+                int count = t == null ? 0 : t.Count;
                 resp.Append(new GoodCount(goods[i], count));
             }
            
