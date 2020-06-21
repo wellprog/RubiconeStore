@@ -22,7 +22,7 @@ namespace RubiconeStore.MyViewModels
     {
         private readonly RequestHelper requestHelper;
         private readonly SessionDataStore _sessionDataStore;
-        private readonly Page page;
+        private readonly Page Page;
         public Action NextAction { get; set; }
 
         private string loginOrEmail = "";
@@ -55,7 +55,7 @@ namespace RubiconeStore.MyViewModels
         public LoginViewModel(Page page)
         {
             requestHelper = new RequestHelper();
-            this.page = page;
+            this.Page = page;
             _sessionDataStore = new SessionDataStore();
 
             LoginCommand = new Command(LoginMe, () => !string.IsNullOrEmpty(LoginOrEmail) && !string.IsNullOrEmpty(Password));
@@ -72,19 +72,26 @@ namespace RubiconeStore.MyViewModels
         {
             if (string.IsNullOrEmpty(loginOrEmail) || string.IsNullOrEmpty(password))
             {
-                await page.DisplayAlert("Ошибка", "Имя пользователя и пароль должны быть заполнены", "Ok");
+                await Page.DisplayAlert("Ошибка!", "Имя пользователя и пароль должны быть заполнены", "Ok");
                 return;
             }
 
-            UserAuthModel model = await requestHelper.Get<UserAuthModel>("http://rstore.kikoriki.space/User", new Dictionary<string, object>
+            var responce = await requestHelper.GetWithResponce<UserAuthModel>("http://rstore.kikoriki.space/User", new Dictionary<string, object>
             {
                 { "loginOrEmail", loginOrEmail },
                 { "password", password }
             });
 
-            _sessionDataStore.UserAuthModel = model;
+            if(responce.ErrorCode == 0)
+            {
+                _sessionDataStore.UserAuthModel = responce.content;
 
-            ShowNext();
+                ShowNext();
+            }
+            else
+            {
+                await Page.DisplayAlert("Ошибка!", responce.ErrorDescription, "Ok");
+            }
         }
 
         public void ShowNext()

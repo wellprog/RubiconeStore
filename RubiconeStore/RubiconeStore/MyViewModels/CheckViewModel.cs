@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using System.Linq;
 
 using Xamarin.Forms;
+using RubiconeStore.Client.ViewModels;
+using RubiconeStore.Client.Views;
 
 namespace RubiconeStore.MyViewModels
 {
@@ -60,7 +62,7 @@ namespace RubiconeStore.MyViewModels
 
         public async Task ShowCheckItemParams(Sell item)
         {
-            //*Here call viewModel to watch buyed good*
+            await Page.Navigation.PushAsync(new GoodDetails(item.Storage.Good));
         }
     }
 }
