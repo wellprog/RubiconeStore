@@ -23,7 +23,7 @@ namespace RubiconeStore.Client.ViewModels
         public string PageName => "История покупок";
 
         public ObservableCollection<IExecutableModel> Elements { get; private set; }
-        public IEnumerable<ToolbarItem> ToolbarItems { get; }
+        public IEnumerable<ToolbarItem> ToolbarItems { get; } = new ToolbarItem[0];
 
         public Page Page { get; set; }
         private readonly SessionDataStore sessionData;
@@ -34,8 +34,6 @@ namespace RubiconeStore.Client.ViewModels
             sessionData = new SessionDataStore();
 
             requestHelper = new RequestHelper();
-
-            Elements = new ObservableCollection<IExecutableModel>();
         }
 
         public async Task Appearing()

@@ -19,9 +19,9 @@ namespace RubiconeStoreBack.Controllers
 {
     [ApiController]
     //Класс для контролирования корзины пользователя
-    public class CheckController : BaseController<CartController>
+    public class CheckController : BaseController<CheckController>
     {
-        public CheckController(ILogger<CartController> logger, DbStore store, UserHelper userHelper)
+        public CheckController(ILogger<CheckController> logger, DbStore store, UserHelper userHelper)
             : base(logger, userHelper, store) { }
 
 
@@ -29,12 +29,12 @@ namespace RubiconeStoreBack.Controllers
         [HttpGet]
         public ResponceModel<IEnumerable<Check>> GetHistory(string AuthKey)
         {
-            var cart = _store.Checks.Where(f => f.UserID == _user.ID && f.IsDone)
+            var history = _store.Checks.Where(f => f.UserID == _user.ID && f.IsDone)
                                     .Include(f => f.Sells)
                                     .ThenInclude(f => f.Storage)
                                     .ThenInclude(f => f.Good);
 
-            return new ResponceModel<IEnumerable<Check>> { content = cart };
+            return new ResponceModel<IEnumerable<Check>> { content = history };
         }
     }
 }
