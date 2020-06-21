@@ -38,13 +38,32 @@ namespace RubiconeStoreBack.Controllers
 
         [HttpGet]
         [Route("[controller]/{AuthKey}/{CategoryId}")]
-        public ResponceModel<IEnumerable<Good>> GetAllByCategory(string AuthKey, int CategoryId)
+        public ResponceModel<IEnumerable<GoodCount>> GetAllByCategory(string AuthKey, int CategoryId)
         {
-            var responce = _userHelper.IsUserAutorized<IEnumerable<Good>>(AuthKey);
+            #region Old Shit
+            //var responce = _userHelper.IsUserAutorized<IEnumerable<Good>>(AuthKey);
+            //if (responce != null) return responce;
+
+            //var resp = _store.Goods.Where(f => f.GoodCategoryID == CategoryId);
+            //return new ResponceModel<IEnumerable<Good>> { content = resp };
+            #endregion
+            #region New Shit
+            var responce = _userHelper.IsUserAutorized<IEnumerable<GoodCount>>(AuthKey);
             if (responce != null) return responce;
 
-            var resp = _store.Goods.Where(f => f.GoodCategoryID == CategoryId);
-            return new ResponceModel<IEnumerable<Good>> { content = resp };
+            Good[] goods = _store.Goods.Where(f => f.GoodCategoryID == CategoryId).ToArray();
+            int[] counts = new int[goods.Length];
+
+            GoodCount[] resp = new GoodCount[goods.Length];
+
+            for (int i = 0; i < goods.Count(); i++)
+            {
+                int count = (_store.Storages.Where(f => f.GoodID == goods[i].ID) as Storage).Count;
+                resp.Append(new GoodCount(goods[i], count));
+            }
+           
+            return new ResponceModel<IEnumerable<GoodCount>> { content = resp };
+            #endregion
         }
     }
 }
