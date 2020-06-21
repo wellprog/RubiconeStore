@@ -53,4 +53,4 @@ namespace RubiconeStore.Client.ViewModels
 
         }
     }
-}
+} 
