@@ -21,14 +21,17 @@ namespace RubiconeStore.MyViewModels
         private readonly Page _page;
         private readonly SessionDataStore _sessionDataStore;
 
-        public string Login { get
+        public string Login
+        {
+            get
             {
                 return _user.Login;
-            } set
+            }
+            set
             {
                 _user.Login = value;
                 OnPropertyChanged();
-            } 
+            }
         }
 
         public string Email
@@ -90,9 +93,12 @@ namespace RubiconeStore.MyViewModels
 
         async void RegisterIt()
         {
-            await requestHelper.Post<UserAuthModel, User>("http://rstore.kikoriki.space/User", _user);
-            
-            await _page.Navigation.PopModalAsync();
+            ResponceModel<UserAuthModel> responce = await requestHelper.PostWithResponce<UserAuthModel, User>("http://rstore.kikoriki.space/User", _user);
+
+            if (responce.ErrorCode == 0)
+                await _page.Navigation.PopModalAsync();
+            else
+                await _page.DisplayAlert("Ошибка!", responce.ErrorDescription, "Ok");
         }
 
         bool CanRegister()

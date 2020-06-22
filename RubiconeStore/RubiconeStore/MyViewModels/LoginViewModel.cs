@@ -26,7 +26,8 @@ namespace RubiconeStore.MyViewModels
         public Action NextAction { get; set; }
 
         private string loginOrEmail = "";
-        public string LoginOrEmail { 
+        public string LoginOrEmail
+        {
             get
             {
                 return loginOrEmail;
@@ -38,7 +39,8 @@ namespace RubiconeStore.MyViewModels
         }
 
         private string password = "";
-        public string Password { 
+        public string Password
+        {
             get
             {
                 return password;
@@ -76,22 +78,20 @@ namespace RubiconeStore.MyViewModels
                 return;
             }
 
-            var responce = await requestHelper.GetWithResponce<UserAuthModel>("http://rstore.kikoriki.space/User", new Dictionary<string, object>
+            ResponceModel<UserAuthModel> responce = await requestHelper.GetWithResponce<UserAuthModel>("http://rstore.kikoriki.space/User", new Dictionary<string, object>
             {
                 { "loginOrEmail", loginOrEmail },
                 { "password", password }
             });
 
-            if(responce.ErrorCode == 0)
+            if (responce.ErrorCode == 0)
             {
                 _sessionDataStore.UserAuthModel = responce.content;
 
                 ShowNext();
             }
             else
-            {
                 await Page.DisplayAlert("Ошибка!", responce.ErrorDescription, "Ok");
-            }
         }
 
         public void ShowNext()
