@@ -40,7 +40,7 @@ namespace RubiconeStore.Client.ViewModels
 
         public async Task Appearing()
         {
-            var items = await requestHelper.Get<IEnumerable<Check>>($"http://rstore.kikoriki.space/Check/{ sessionData.SessionToken }");
+            var items = await requestHelper.Get<IEnumerable<Check>>($"http://rstore.kikoriki.space/Check/{ sessionData.UserAuthModel.User.ID }");
 
             Elements.Clear();
             foreach (var item in items)

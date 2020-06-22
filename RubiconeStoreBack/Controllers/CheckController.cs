@@ -25,11 +25,15 @@ namespace RubiconeStoreBack.Controllers
             : base(logger, userHelper, store) { }
 
 
-        [Route("[controller]/{AuthKey}")]
+        [Route("[controller]/{UserID}")]
         [HttpGet]
-        public ResponceModel<IEnumerable<Check>> GetHistory(string AuthKey)
+        public ResponceModel<IEnumerable<Check>> GetHistory(int UserID)
         {
-            var history = _store.Checks.Where(f => f.UserID == _user.ID && f.IsDone);
+            User gettedUser = _store.Users.Where(f => f.ID == UserID).First();
+            if(gettedUser == null)
+                return new ResponceModel<IEnumerable<Check>>().WrongAuthKey();
+
+            var history = gettedUser.Checks?.Where(f => f.IsDone);
 
             return new ResponceModel<IEnumerable<Check>> { content = history };
         }
