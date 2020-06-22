@@ -13,7 +13,8 @@ namespace RubiconeStoreBack.Error
             FieldsEmpty = 1000,
             UserNotFound,
             WrongPassword,
-            SameUserFound,
+            SameLoginFound,
+            SameEmailFound,
             WrongAuthKey
         }
 
@@ -41,10 +42,18 @@ namespace RubiconeStoreBack.Error
             return responce;
         }
 
-        public static T SameUserFound<T>(this T responce) where T : IErrorResponce
+        public static T SameLoginFound<T>(this T responce) where T : IErrorResponce
         {
-            responce.ErrorCode = (int)AErrors.SameUserFound;
-            responce.ErrorDescription = "Такой пользователь уже зарегистрирован";
+            responce.ErrorCode = (int)AErrors.SameLoginFound;
+            responce.ErrorDescription = "Этот логин занят другим пользователем";
+
+            return responce;
+        }
+
+        public static T SameEmailFound<T>(this T responce) where T : IErrorResponce
+        {
+            responce.ErrorCode = (int)AErrors.SameEmailFound;
+            responce.ErrorDescription = "Пользователь с такой почтой уже существует";
 
             return responce;
         }

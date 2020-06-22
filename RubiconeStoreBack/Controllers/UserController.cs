@@ -32,23 +32,21 @@ namespace RubiconeStoreBack.Controllers
         public ResponceModel<UserAuthModel> Autorize(string loginOrEmail, string password)
         {
             if (string.IsNullOrEmpty(loginOrEmail) || string.IsNullOrEmpty(password))
-            {
                 return new ResponceModel<UserAuthModel>().FieldEmptyError();
-            }
 
-            var user = _store.Users.Where(f => f.Login == loginOrEmail).Where(f => f.Email == loginOrEmail).Include(f => f.UserSessions).FirstOrDefault();
+            var foundUser = _store.Users.Where(f => f.Login == loginOrEmail).Include(f => f.UserSessions).FirstOrDefault();
+            if (foundUser == null)
+                foundUser = _store.Users.Where(f => f.Email == loginOrEmail).Include(f => f.UserSessions).FirstOrDefault();
 
-            if (user == null)
+            if (foundUser == null)
                 return new ResponceModel<UserAuthModel>().UserNotFound();
 
-            if (!user.IsPasswordRight(password))
-            {
+            if (!foundUser.IsPasswordRight(password))
                 return new ResponceModel<UserAuthModel>().WrongPassword();
-            }
 
-            user.UserSessions.Where(f => f.IsActive == true).ToList().ForEach(f => f.IsActive = false);
+            foundUser.UserSessions.Where(f => f.IsActive == true).ToList().ForEach(f => f.IsActive = false);
 
-            UserSession session = new UserSession() { UserID = user.ID };
+            UserSession session = new UserSession() { UserID = foundUser.ID };
 
             _store.Add(session);
             _store.SaveChanges();
@@ -57,7 +55,7 @@ namespace RubiconeStoreBack.Controllers
             {
                 content = new UserAuthModel
                 {
-                    User = user,
+                    User = foundUser,
                     UserSession = session
                 }
             };
@@ -67,12 +65,16 @@ namespace RubiconeStoreBack.Controllers
         [HttpPost]
         public ResponceModel<UserAuthModel> Register(User user)
         {
-            if (!user.IsModelRight()) return new ResponceModel<UserAuthModel>().FieldEmptyError();
+            if (!user.IsModelRight())
+                return new ResponceModel<UserAuthModel>().FieldEmptyError();
 
-            var foundUser = _store.Users.Where(f => f.Email == user.Email).Include(f => f.UserSessions).FirstOrDefault();
+            var foundLogin = _store.Users.Where(f => f.Login == user.Login).Include(f => f.UserSessions).FirstOrDefault();
+            if (foundLogin != null)
+                return new ResponceModel<UserAuthModel>().SameLoginFound();
 
-            if (foundUser != null)
-                return new ResponceModel<UserAuthModel>().SameUserFound();
+            var foundEmail = _store.Users.Where(f => f.Email == user.Email).Include(f => f.UserSessions).FirstOrDefault();
+            if (foundEmail != null)
+                return new ResponceModel<UserAuthModel>().SameEmailFound();
 
             user.UserSessions = new List<UserSession>();
             user.UserSessions.Add(new UserSession());
